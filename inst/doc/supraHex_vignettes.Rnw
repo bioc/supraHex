@@ -109,13 +109,13 @@ dev.off()
 \subsection{Why to use \Rpackage{supraHex}?}\label{subsec:why}
 %-------------------------------
 
-Biologists are far ofter confronted with ever-increasing amounts of omics data that are tabulated in the form of matrix, measuring levels/activities of genomic coordinates (e.g. genes) against experimental samples. This matrix usually involves tens of thousands of genes but a much smaller number of samples (at most hundreds). The atypical structure 'small-sample-but-large-gene' requires easy-to-interpret models. Learning algorithm such as self-organising map is popular in this aspect for its unique capability in capturing the input data, this is, performing vector quantisation but regularised by vector projection. The \Rpackage{supraHex} borrows this learning algorithm to produce a supra-hexagonal map for input omics data. Thanks to the prevalence in nature and symmetric beauty, this supra-hexagonal map is probably suited for analysing data with approximately perfect symmetry in high-dimensional input space. We argue that omics data tend to be symmetric for global-scale measurements of gene levels/activities. Even when priori knowledge of the data structure is unknown, at least the supra-hexagonal map can provide the ease with visualisation.
+Biologists are far often confronted with ever-increasing amounts of omics data that are tabulated in the form of matrix, measuring levels/activities of genomic coordinates (e.g. genes) against experimental samples. The matrix usually involves tens of thousands of genes but a much smaller number of samples (at most hundreds), known as 'small-sample-but-large-gene'. The atypical structure requires easy-to-interpret models. Unsupervised learning algorithm/model such as self-organising map is popular for its unique way in capturing input data patterns, this is, simultaneously performing vector quantisation but regularised by vector projection. The \Rpackage{supraHex} borrows this learning algorithm to produce a supra-hexagonal map (two-dimensional output space) from input omics data ( high-dimensional input space). In this map, geographically close locations are indicative of patterns that are similar in terms of the input space. Thanks to the prevalence in nature and symmetric beauty, this supra-hexagonal map is probably suited for analysing such input data with approximately perfect symmetry. We argue that omics data tend to be symmetric due to unbiased measurements of gene levels/activities on a global scale. Even when priori knowledge of the data symmetry is unknown, we also argue that at least the supra-hexagonal map can provide the ease with visualisation.
 
 %-------------------------------
 \subsection{How to interpret \Rpackage{supraHex}?}\label{subsec:how}
 %-------------------------------
 
-After training, the supra-hexagonal map ensembles the structure of the input data in a topology-preserving fashion, that is, preserving the shape and density of the input data. Each map node is associated with two coordinate systems: one in 2-dimensional space just as you see; the other in input high-dimensional space as you imagine. The coordinate in this high-dimensional space is represented as a prototype vector, collectively forming the codebook matrix. The simplest explanation is: the codebook matrix ensembles the input data matrix. In terms of gene activity matrix as input, \Rpackage{supraHex} produces a map, wherein (i) genes with the same or similar activity patterns are located/clustered to the same or nearby map nodes, (ii) the density of genes in this map follows the data density in the high-dimensional space, and (iii) when all map nodes are color-coded according to values in each component of all prototype vectors (i.e. the column of codebook matrix), the color-coded component map can be used to illustrate sample-specific gene activities. In essence, the supra-hexagonal map trains/models the input data that is converted into the codebook matrix.
+As a result of training, similar input data are mapped onto neighboring regions of the supra-hexagonal map. More formally, the map ensembles the structure (the shape and density) of the input data in a topology-preserving fashion. Each map node is associated with two coordinates: one in two-dimensional output space just as you have seen; the other in high-dimensional input space as you can imagine. The coordinate in input space is represented as a prototype/weight vector (with the same dimension as input data vector). Prototype vectors in all map nodes collectively form the codebook matrix. In essence, the supra-hexagonal map converts the input data into the codebook matrix. In terms of gene activity matrix as input, \Rpackage{supraHex} produces a map, wherein (i) genes with the same or similar activity patterns are spatially located/clustered to the same or nearby map nodes, (ii) the density of genes mapped onto this map (i.e. what we can see) is an equivalent to the data density in  high-dimensional input space (i.e. what we can only imagine), and (iii) when all map nodes are color-coded according to values in a specific component for all prototype vectors (i.e. a specific column of codebook matrix), a color-coded component map can be used to illustrate sample-specific gene activities, and thus multiple components illustrate changes across all samples in subject. Owing to  these unique features, the supra-hexagonal map can be used for gene clustering and sample representation. 
 
 
 %------------------------------------------------------------
@@ -123,18 +123,14 @@ After training, the supra-hexagonal map ensembles the structure of the input dat
 \label{sec:inst}
 %------------------------------------------------------------
 
-\Rpackage{supraHex} is a package for the R computing environment and it is assumed that you have already installed the latest version of R (\url{http://www.r-project.org}). You can install the package from the source codes following step-by-step guidelines in \url{http://supfam.org/SUPERFAMILY/dcGO/supraHex.html}. Or, you can obtain it from Bioconductor (\url{http://www.bioconductor.org}):
+\Rpackage{supraHex} is a package for the R computing environment and it is assumed that you have already installed the latest version of R. You can install the package from the source codes following step-by-step guidelines in \url{http://supfam.org/SUPERFAMILY/dcGO/supraHex.html}. Or, you can obtain it from Bioconductor:
 <<eval=F, echo=T>>=
 source("http://bioconductor.org/biocLite.R")
 biocLite("supraHex",depend=TRUE)
-@
-
-As with any R package, to use \Rpackage{supraHex} you should first load it: 
-<<eval=T, echo=T>>=
 library(supraHex) # load the package
 @
 
-\Rpackage{supraHex} is free to use and redistribute under GPL 2. If you use this package for a publication, we would ask you to cite: 
+\Rpackage{supraHex} is free to use under GPL 2. You can get citation information from: 
 <<eval=F, echo=T>>=
 citation("supraHex") # cite the package
 @
@@ -143,16 +139,10 @@ citation("supraHex") # cite the package
 \section{Quick Overview}\label{sec:overview}
 %------------------------------------------------------------
 
-The functions in the package \Rpackage{supraHex} are divided into two categories: one for training and analysis (see Table~\ref{tab:train}), the other for visualisation (see Table~\ref{tab:visual}). 
-
-To get general information for the package, the command is:
+The functions in the package \Rpackage{supraHex} are divided into two categories: one for training and analysis (see Table~\ref{tab:train}), the other for visualisation (see Table~\ref{tab:visual}). To get help information for the package, please type one of two commands:
 <<eval=F, echo=T>>=
-library(help="supraHex")
-@
-
-Alternatively, type the following command and follow the links to the \Rpackage{supraHex} package help. 
-<<eval=F, echo=T>>=
-help.start()
+library(help="supraHex") # real-time help
+help.start() # html help (follow the links to supraHex)
 @
 
 
@@ -259,7 +249,7 @@ The function \Rfunction{sPipeline} setups the pipeline for completing \textit{ab
 
 Below is its common usage of \Rfunction{sPipeline} with default setup (using gaussian kernel and printing out messages in the screen):
 
-<<>>=
+<<eval=T, echo=T>>=
 sMap <- sPipeline(data=data)
 @
 
