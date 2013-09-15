@@ -502,11 +502,10 @@ This dataset\footnote{\url{http://www.ncbi.nlm.nih.gov/pubmed/21402797}} contain
 \begin{verbatim}
 # import data
 data(Xiang)
-# transform data by row/gene centering
-data <- Xiang - matrix(rep(apply(Xiang,1,mean),ncol(Xiang)),ncol=ncol(Xiang))
+data <- Xiang
 # get trained
 sMap <- sPipeline(data)
-visHexMulComp(sMap, title.xy=c(0.35,1), zlim=c(-1,1), gp=grid::gpar(cex=0.8))
+visHexMulComp(sMap, title.xy=c(0.35,1), zlim=c(-1,1))
 sWriteData(sMap, data, filename="Output_Xiang.txt")
 # get visualised
 visHexMapping(sMap, mappingType="indexes")
@@ -520,7 +519,7 @@ visDmatCluster(sMap, sBase)
 sWriteData(sMap, data, sBase, filename="Output_base_Xiang.txt")
 # get reordered
 sReorder <- sCompReorder(sMap, amplifier=3, metric="pearson")
-visCompReorder(sMap, sReorder, title.xy=c(0.35,1), zlim=c(-1,1), gp=grid::gpar(cex=0.8))
+visCompReorder(sMap, sReorder, title.xy=c(0.35,1), zlim=c(-1,1))
 \end{verbatim}
 
 %------------------------------------------------------------

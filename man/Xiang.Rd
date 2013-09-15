@@ -9,7 +9,7 @@ data(Xiang)
 
 \description{
 Arabidopsis embryo dataset contains gene expression levels (15243 genes and 7 embryo samples) from Xiang et al. (2010).
-This dataset has been pre-processed: filtering out genes with an intensity below 777.6 in any samples; and 2-base logarithmic transformation.}
+This dataset has been pre-processed: filtering out genes with an intensity below 777.6 in any samples; 2-base logarithmic transformation; and row/gene centering.}
 
 \value{
   \item{Xiang}{a gene expression matrix of 15243 genes x 7 stage samples. These embryo stages are: zygote, quadrant, globular, heart, torpedo, bent, and mature.}
