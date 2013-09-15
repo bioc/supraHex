@@ -358,7 +358,7 @@ Reordering components for trained map can be realised by using a new map grid (w
 
 <<results=hide, echo=T>>=
 sReorder <- sCompReorder(sMap=sMap, amplifier=2, metric="cos")
-visCompReorder(sMap=sMap, sReorder=sReorder, zlim=c(-1.5,1.5))
+visCompReorder(sMap=sMap, sReorder=sReorder)
 @
 \myincfig{supraHex_vignettes-sReorder}{1.2\textwidth}{Reordered components of trained map}{Each component illustrates the sample-specific map and is placed within a two-dimensional rectangular lattice (framed in black). Within each component, genes with the same or similar expression patterns are mapped to the same or nearby map nodes. When zooming out to look at between-components/samples relationships, samples with the similar expression profiles are placed closer to each other.}
 
@@ -385,35 +385,35 @@ From the mathematical definitions and curve forms above, it is clear that the "g
 \item with "gaussian" kernel (see Figure~\ref{supraHex_vignettes-sMap_ga})
 <<eval=F, echo=T>>=
 sMap_ga <- sPipeline(data=data, neighKernel="gaussian", verbose=F)
-visHexMulComp(sMap_ga, zlim=c(-1.5,1.5))
+visHexMulComp(sMap_ga)
 @
 \myincfig{supraHex_vignettes-sMap_ga}{0.8\textwidth}{Components of trained map with the gaussian kernel}{}
 
 \item with "bubble" kernel (see Figure~\ref{supraHex_vignettes-sMap_bu})
 <<eval=F, results=hide, echo=T>>=
 sMap_bu <- sPipeline(data=data, neighKernel="bubble", verbose=F)
-visHexMulComp(sMap_bu, zlim=c(-1.5,1.5))
+visHexMulComp(sMap_bu)
 @
 \myincfig{supraHex_vignettes-sMap_bu}{0.8\textwidth}{Components of trained map with the bubble kernel}{}
 
 \item with "cutgaussian" kernel (see Figure~\ref{supraHex_vignettes-sMap_cu})
 <<eval=F, results=hide, echo=T>>=
 sMap_cu <- sPipeline(data=data, neighKernel="cutgaussian", verbose=F)
-visHexMulComp(sMap_cu, zlim=c(-1.5,1.5))
+visHexMulComp(sMap_cu)
 @
 \myincfig{supraHex_vignettes-sMap_cu}{0.8\textwidth}{Components of trained map with the cutgaussian kernel}{}
 
 \item with "ep" kernel (see Figure~\ref{supraHex_vignettes-sMap_ep})
 <<eval=F, results=hide, echo=T>>=
 sMap_ep <- sPipeline(data=data, neighKernel="ep", verbose=F)
-visHexMulComp(sMap_ep, zlim=c(-1.5,1.5))
+visHexMulComp(sMap_ep)
 @
 \myincfig{supraHex_vignettes-sMap_ep}{0.8\textwidth}{Components of trained map with the ep kernel}{}
 
 \item with "gamma" kernel (see Figure~\ref{supraHex_vignettes-sMap_gm})
 <<eval=F, results=hide, echo=T>>=
 sMap_gm <- sPipeline(data=data, neighKernel="gamma", verbose=F)
-visHexMulComp(sMap_gm, zlim=c(-1.5,1.5))
+visHexMulComp(sMap_gm)
 @
 \myincfig{supraHex_vignettes-sMap_gm}{0.8\textwidth}{Components of trained map with the gamma kernel}{}
 
@@ -441,7 +441,7 @@ data(Golub)
 data <- Golub
 # get trained
 sMap <- sPipeline(data, neighKernel="ep")
-visHexMulComp(sMap,colormap="yr",title.xy=c(0.35,1),zlim=c(8,12),gp=grid::gpar(cex=0.8))
+visHexMulComp(sMap,colormap="yr",title.rotate=10,gp=grid::gpar(cex=0.8))
 sWriteData(sMap, data, filename="Output_Golub.txt")
 # get visualised
 visHexMapping(sMap, mappingType="indexes")
@@ -449,7 +449,7 @@ visHexMapping(sMap, mappingType="hits")
 visHexMapping(sMap, mappingType="dist")
 # get reordered
 sReorder <- sCompReorder(sMap,amplifier=2,metric="pearson")
-visCompReorder(sMap,sReorder,colormap="yr",title.xy=c(0.35,1),zlim=c(8,12),
+visCompReorder(sMap,sReorder,colormap="yr",title.rotate=10,
 gp=grid::gpar(cex=0.8))
 \end{verbatim}
 
@@ -474,7 +474,7 @@ data(Fang)
 data <- Fang - matrix(rep(apply(Fang,1,mean),ncol(Fang)),ncol=ncol(Fang))
 # get trained
 sMap <- sPipeline(data)
-visHexMulComp(sMap, title.xy=c(0.35,1), zlim=c(-1,1), gp=grid::gpar(cex=0.8))
+visHexMulComp(sMap, title.rotate=10)
 sWriteData(sMap, data, filename="Output_Fang.txt")
 # get visualised
 visHexMapping(sMap, mappingType="indexes")
@@ -488,14 +488,14 @@ visDmatCluster(sMap, sBase)
 sWriteData(sMap, data, sBase, filename="Output_base_Fang.txt")
 # get reordered
 sReorder <- sCompReorder(sMap, amplifier=3, metric="none")
-visCompReorder(sMap, sReorder, title.xy=c(0.35,1), zlim=c(-1,1), gp=grid::gpar(cex=0.8))
+visCompReorder(sMap, sReorder, title.rotate=10)
 \end{verbatim}
 
 %-------------------------------
 \subsection{Arabidopsis embryo dataset from Xiang et al}\label{subsec:plant}
 %-------------------------------
 
-This dataset\footnote{\url{http://www.ncbi.nlm.nih.gov/pubmed/21402797}} contains gene expression levels (15243 genes and 7 embryo stages) (see Figure~\ref{supraHex_vignettes-plant}).
+This dataset\footnote{\url{http://www.ncbi.nlm.nih.gov/pubmed/21402797}} contains gene expression levels (15243 genes and 7 embryo stages) (see Figure~\ref{supraHex_vignettes-Xiang}).
 
 \myincfig{supraHex_vignettes-plant}{1.2\textwidth}{Reordered components of map during embryo development in Arabidopsis}{Geometric locations of sample-specific transcriptome map characterise the relationships between the seven developmental stages: zygote, quadrant, globular, heart, torpedo, bent and mature.}
 
@@ -505,7 +505,7 @@ data(Xiang)
 data <- Xiang
 # get trained
 sMap <- sPipeline(data)
-visHexMulComp(sMap, title.xy=c(0.35,1), zlim=c(-1,1))
+visHexMulComp(sMap, title.rotate=10)
 sWriteData(sMap, data, filename="Output_Xiang.txt")
 # get visualised
 visHexMapping(sMap, mappingType="indexes")
@@ -519,7 +519,7 @@ visDmatCluster(sMap, sBase)
 sWriteData(sMap, data, sBase, filename="Output_base_Xiang.txt")
 # get reordered
 sReorder <- sCompReorder(sMap, amplifier=3, metric="pearson")
-visCompReorder(sMap, sReorder, title.xy=c(0.35,1), zlim=c(-1,1))
+visCompReorder(sMap, sReorder, title.rotate=10)
 \end{verbatim}
 
 %------------------------------------------------------------

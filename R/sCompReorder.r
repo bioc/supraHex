@@ -39,7 +39,7 @@
 #'
 #' # 4) visualise multiple component planes reorded within a sheet-shape rectangle grid
 #' visCompReorder(sMap=sMap, sReorder=sReorder, margin=rep(0.1,4), height=7, 
-#' title.rotation=0, title.xy=c(0.45, 1), colormap="gbr", ncolors=10, zlim=c(-1,1), 
+#' title.rotate=0, title.xy=c(0.45, 1), colormap="gbr", ncolors=10, zlim=c(-1,1), 
 #' border.color="transparent")
 
 sCompReorder <- function(sMap, xdim=NULL, ydim=NULL, amplifier=NULL, metric=c("none","pearson","spearman","kendall","euclidean","manhattan","cos","mi"), init=c("uniform","sample","linear"), algorithm=c("sequential"), alphaType=c("invert","linear","power"), neighKernel=c("gaussian","bubble","cutgaussian","ep","gamma"))

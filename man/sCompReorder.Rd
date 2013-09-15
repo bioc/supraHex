@@ -100,7 +100,7 @@ sReorder <- sCompReorder(sMap=data, amplifier=2, metric="pearson")
 
 # 4) visualise multiple component planes reorded within a sheet-shape rectangle grid
 visCompReorder(sMap=sMap, sReorder=sReorder, margin=rep(0.1,4), height=7,
-title.rotation=0, title.xy=c(0.45, 1), colormap="gbr", ncolors=10, zlim=c(-1,1),
+title.rotate=0, title.xy=c(0.45, 1), colormap="gbr", ncolors=10, zlim=c(-1,1),
 border.color="transparent")
 }
 \seealso{

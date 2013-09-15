@@ -5,7 +5,7 @@
 #' @param sMap an object of class "sMap"
 #' @param margin margins as units of length 4 or 1
 #' @param height a numeric value specifying the height of device
-#' @param title.rotation the rotation of the title
+#' @param title.rotate the rotation of the title
 #' @param title.xy the coordinates of the title
 #' @param colormap short name for the colormap
 #' @param ncolors the number of colors specified
@@ -31,7 +31,7 @@
 #' # 3) visualise multiple component planes of a supra-hexagonal grid
 #' visHexMulComp(sMap, colormap="jet", ncolors=20, zlim=c(-1,1), gp=grid::gpar(cex=0.8))
 
-visHexMulComp <-function (sMap, margin=rep(0.1,4), height=7, title.rotation=0, title.xy=c(0.45, 1), colormap=c("bwr","jet","gbr","wyr","br","yr","rainbow"), ncolors=40, zlim=c(0,1), border.color="transparent", gp=grid::gpar())
+visHexMulComp <-function (sMap, margin=rep(0.1,4), height=7, title.rotate=0, title.xy=c(0.45, 1), colormap=c("bwr","jet","gbr","wyr","br","yr","rainbow"), ncolors=40, zlim=NULL, border.color="transparent", gp=grid::gpar())
 {
     
     colormap <- match.arg(colormap)
@@ -43,6 +43,21 @@ visHexMulComp <-function (sMap, margin=rep(0.1,4), height=7, title.rotation=0, t
     cnames <- colnames(codebook)
     if(is.null(cnames)){
         cnames <- seq(1,ncol(codebook))
+    }
+   
+    vmin <- floor(quantile(codebook, 0.05))
+    vmax <- ceiling(quantile(codebook, 0.95))
+    if(vmin < 0 & vmax > 0){
+        vsym <- abs(min(vmin, vmax))
+        vmin <- -1*vsym
+        vmax <- vsym
+    }
+    if(!is.null(zlim)){
+        if(zlim[1] < floor(min(codebook)) | zlim[2] > ceiling(max(codebook))){
+            zlim <- c(vmin,vmax)
+        }
+    }else{
+        zlim <- c(vmin,vmax)
     }
     
     xdim <- sMap$xdim
@@ -74,7 +89,7 @@ visHexMulComp <-function (sMap, margin=rep(0.1,4), height=7, title.rotation=0, t
         if(identical(flag1,integer(0)) & identical(flag2,integer(0)) & identical(flag3,integer(0))){
             t <- t+1
             if(t <= length(cnames)){
-                grid::grid.text(cnames[t], x=grid::unit(title.xy[1],"npc"), y=grid::unit(title.xy[2],"npc"), just=c("left","top"), rot=title.rotation, gp=gp)
+                grid::grid.text(cnames[t], x=grid::unit(title.xy[1],"npc"), y=grid::unit(title.xy[2],"npc"), just=c("left","top"), rot=title.rotate, gp=gp)
                 visHexComp(sMap=sMap, comp=codebook[,t], margin=margin, area.size=1, colormap=colormap, ncolors=ncolors, zlim=zlim, border.color=border.color, newpage=F)
             }
         }else if(!identical(flag3,integer(0))){

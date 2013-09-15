@@ -3,9 +3,9 @@
 \title{Function to visualise multiple component planes of a supra-hexagonal grid}
 \usage{
   visHexMulComp(sMap, margin = rep(0.1, 4), height = 7,
-    title.rotation = 0, title.xy = c(0.45, 1),
+    title.rotate = 0, title.xy = c(0.45, 1),
     colormap = c("bwr", "jet", "gbr", "wyr", "br", "yr", "rainbow"),
-    ncolors = 40, zlim = c(0, 1),
+    ncolors = 40, zlim = NULL,
     border.color = "transparent", gp = grid::gpar())
 }
 \arguments{
@@ -16,7 +16,7 @@
   \item{height}{a numeric value specifying the height of
   device}
 
-  \item{title.rotation}{the rotation of the title}
+  \item{title.rotate}{the rotation of the title}
 
   \item{title.xy}{the coordinates of the title}
 

@@ -6,7 +6,7 @@
 #' @param sReorder an object of class "sReorder"
 #' @param margin margins as units of length 4 or 1
 #' @param height a numeric value specifying the height of device
-#' @param title.rotation the rotation of the title
+#' @param title.rotate the rotation of the title
 #' @param title.xy the coordinates of the title
 #' @param colormap short name for the colormap
 #' @param ncolors the number of colors specified
@@ -34,10 +34,10 @@
 #'
 #' # 4) visualise multiple component planes reorded within a sheet-shape rectangle grid
 #' visCompReorder(sMap=sMap, sReorder=sReorder, margin=rep(0.1,4), height=7, 
-#' title.rotation=0, title.xy=c(0.45, 1), colormap="gbr", ncolors=10, zlim=c(-1,1), 
+#' title.rotate=0, title.xy=c(0.45, 1), colormap="gbr", ncolors=10, zlim=c(-1,1), 
 #' border.color="transparent")
 
-visCompReorder <-function (sMap, sReorder, margin=rep(0.1,4), height=7, title.rotation=0, title.xy=c(0.45, 1), colormap=c("bwr","jet","gbr","wyr","br","yr","rainbow"), ncolors=40, zlim=c(0,1), border.color="transparent", gp=grid::gpar())
+visCompReorder <-function (sMap, sReorder, margin=rep(0.1,4), height=7, title.rotate=0, title.xy=c(0.45, 1), colormap=c("bwr","jet","gbr","wyr","br","yr","rainbow"), ncolors=40, zlim=NULL, border.color="transparent", gp=grid::gpar())
 {
     
     colormap <- match.arg(colormap)
@@ -49,6 +49,21 @@ visCompReorder <-function (sMap, sReorder, margin=rep(0.1,4), height=7, title.ro
     cnames <- colnames(codebook)
     if(is.null(cnames)){
         cnames <- seq(1,ncol(codebook))
+    }
+
+    vmin <- floor(quantile(codebook, 0.05))
+    vmax <- ceiling(quantile(codebook, 0.95))
+    if(vmin < 0 & vmax > 0){
+        vsym <- abs(min(vmin, vmax))
+        vmin <- -1*vsym
+        vmax <- vsym
+    }
+    if(!is.null(zlim)){
+        if(zlim[1] < vmin | zlim[2] > vmax){
+            zlim <- c(vmin,vmax)
+        }
+    }else{
+        zlim <- c(vmin,vmax)
     }
 
     xdim <- sMap$xdim
@@ -74,7 +89,7 @@ visCompReorder <-function (sMap, sReorder, margin=rep(0.1,4), height=7, title.ro
         ## grid::grid.rect(gp=gpar(col="gray"))
         ## current.vpTree(FALSE)
         
-        grid::grid.text(cnames[k], x=grid::unit(title.xy[1],"npc"), y=grid::unit(title.xy[2],"npc"), just=c("left","top"), rot=title.rotation, gp=gp)
+        grid::grid.text(cnames[k], x=grid::unit(title.xy[1],"npc"), y=grid::unit(title.xy[2],"npc"), just=c("left","top"), rot=title.rotate, gp=gp)
         visHexComp(sMap=sMap, comp=codebook[,k], margin=margin, area.size=1, colormap=colormap, ncolors=max(ncolors*5, 100), zlim=zlim, border.color=border.color, newpage=F)
     }
     

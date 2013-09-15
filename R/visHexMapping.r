@@ -49,7 +49,7 @@
 #' # 3e) for clusters/bases partitioned from the sMap
 #' visHexMapping(sMap,mappingType="bases")
 
-visHexMapping <- function (sObj, mappingType=c("indexes","hits","dist","antidist","bases","customized"), labels=NULL, height=7, margin=rep(0.1,4), area.size=1, gp=grid::gpar(cex=0.8, font=2, col.label="black"),  border.color="black", fill.color="transparent", clip=c("on","inherit","off"), newpage=T)
+visHexMapping <- function (sObj, mappingType=c("indexes","hits","dist","antidist","bases","customized"), labels=NULL, height=7, margin=rep(0.1,4), area.size=1, gp=grid::gpar(cex=0.7, font=1, col.label="black"),  border.color="black", fill.color="transparent", clip=c("on","inherit","off"), newpage=T)
 {
     
     mappingType <- match.arg(mappingType)
