@@ -103,7 +103,7 @@ sTopol <- sTopology(xdim=15, ydim=15, lattice="hexa", shape="suprahex")
 visHexMapping(sTopol,mappingType="indexes",newpage=F)
 dev.off()
 @
-\myincfig{supraHex_vignettes-suprahex}{0.6\textwidth}{A supra-hexagonal map}{It consists of $nHex=169$ smaller hexagons. For easy reference, these hexagons are indexed according to: firstly, how many steps a hexagon is away from the grid centroid ('1' for the centroid itself); secondly, for those hexaons of the same step, an anti-clock order starting from the rightmost. This map can also be easily described by the grid radius (i.e., the maximum steps away from the centroid; $r=8$ in this case), or by the xy-dimensions of the map grid (i.e., the maximum number of hexagons horizontally/vertically; $xdim=ydim=15$ in this case).}
+\myincfig{supraHex_vignettes-suprahex}{0.6\textwidth}{A supra-hexagonal map}{It consists of $nHex=169$ smaller hexagons. For easy reference, these hexagons are indexed according to: firstly, how many steps a hexagon is away from the grid centroid ('1' for the centroid itself); secondly, for those hexagons of the same step, an anti-clock order starting from the rightmost. This map can also be easily described by the grid radius (i.e., the maximum steps away from the centroid; $r=8$ in this case), or by the xy-dimensions of the map grid (i.e., the maximum number of hexagons horizontally/vertically; $xdim=ydim=15$ in this case).}
 
 %-------------------------------
 \subsection{Why to use \Rpackage{supraHex}?}\label{subsec:why}
