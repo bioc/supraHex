@@ -438,6 +438,7 @@ This dataset (the learning set\footnote{\url{http://www.ncbi.nlm.nih.gov/pubmed/
 \begin{verbatim}
 # import data
 data(Golub)
+?Golub
 data <- Golub
 # get trained
 sMap <- sPipeline(data, neighKernel="ep")
@@ -470,6 +471,7 @@ This dataset\footnote{\url{http://www.ncbi.nlm.nih.gov/pubmed/20643359}} involve
 \begin{verbatim}
 # import data
 data(Fang)
+?Fang
 # transform data by row/gene centering
 data <- Fang - matrix(rep(apply(Fang,1,mean),ncol(Fang)),ncol=ncol(Fang))
 # get trained
@@ -495,13 +497,14 @@ visCompReorder(sMap, sReorder, title.rotate=10)
 \subsection{Arabidopsis embryo dataset from Xiang et al}\label{subsec:plant}
 %-------------------------------
 
-This dataset\footnote{\url{http://www.ncbi.nlm.nih.gov/pubmed/21402797}} contains gene expression levels (15243 genes and 7 embryo stages) (see Figure~\ref{supraHex_vignettes-Xiang}).
+This dataset\footnote{\url{http://www.ncbi.nlm.nih.gov/pubmed/21402797}} contains gene expression levels (3625 genes and 7 embryo stages) (see Figure~\ref{supraHex_vignettes-Xiang}).
 
 \myincfig{supraHex_vignettes-plant}{1.2\textwidth}{Reordered components of map during embryo development in Arabidopsis}{Geometric locations of sample-specific transcriptome map characterise the relationships between the seven developmental stages: zygote, quadrant, globular, heart, torpedo, bent and mature.}
 
 \begin{verbatim}
 # import data
 data(Xiang)
+?Xiang
 data <- Xiang
 # get trained
 sMap <- sPipeline(data)
