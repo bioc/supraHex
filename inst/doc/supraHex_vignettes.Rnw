@@ -497,7 +497,7 @@ visCompReorder(sMap, sReorder, title.rotate=10)
 \subsection{Arabidopsis embryo dataset from Xiang et al}\label{subsec:plant}
 %-------------------------------
 
-This dataset\footnote{\url{http://www.ncbi.nlm.nih.gov/pubmed/21402797}} contains gene expression levels (3625 genes and 7 embryo stages) (see Figure~\ref{supraHex_vignettes-Xiang}).
+This dataset\footnote{\url{http://www.ncbi.nlm.nih.gov/pubmed/21402797}} contains gene expression levels (3625 genes and 7 embryo stages) (see Figure~\ref{supraHex_vignettes-plant}).
 
 \myincfig{supraHex_vignettes-plant}{1.2\textwidth}{Reordered components of map during embryo development in Arabidopsis}{Geometric locations of sample-specific transcriptome map characterise the relationships between the seven developmental stages: zygote, quadrant, globular, heart, torpedo, bent and mature.}
 
