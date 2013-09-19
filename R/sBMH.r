@@ -136,7 +136,8 @@ sBMH <- function(sMap, data, which_bmh=c("best", "worst", "all"))
         i_block <- i_block+blen+1
     }
     
-    Qerr <- sqrt(Qerr)
+    #Qerr[Qerr < 0] <- 0
+    #Qerr <- sqrt(Qerr)
     ## mean quantization error: Average distance between each data vector and its BMH
     mqe <- mean(Qerr[!is.na(Qerr[,1]),1])
     

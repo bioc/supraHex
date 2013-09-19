@@ -21,3 +21,8 @@ Update vignette.
 FEATURES IN VERSION 0.99.4
 -------------------------
 Update dataset Xiang.
+
+
+FEATURES IN VERSION 0.99.5
+-------------------------
+Support batch training algorithm.

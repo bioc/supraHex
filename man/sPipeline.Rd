@@ -6,7 +6,7 @@
     nHex = NULL, lattice = c("hexa", "rect"),
     shape = c("suprahex", "sheet"),
     init = c("uniform", "sample", "linear"),
-    algorithm = c("sequential"),
+    algorithm = c("batch", "sequential"),
     alphaType = c("invert", "linear", "power"),
     neighKernel = c("gaussian", "bubble", "cutgaussian", "ep", "gamma"),
     finetuneSustain = F, verbose = T)
@@ -114,6 +114,7 @@ visHexMulComp(sMap, colormap="jet", ncolors=20, zlim=c(-1,1), gp=grid::gpar(cex=
 \seealso{
   \code{\link{sTopology}}, \code{\link{sInitial}},
   \code{\link{sTrainology}}, \code{\link{sTrainSeq}},
-  \code{\link{sBMH}}, \code{\link{visHexMulComp}}
+  \code{\link{sTrainBatch}}, \code{\link{sBMH}},
+  \code{\link{visHexMulComp}}
 }
 

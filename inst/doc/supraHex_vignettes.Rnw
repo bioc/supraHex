@@ -117,7 +117,7 @@ Biologists are far often confronted with ever-increasing amounts of omics data t
 
 As a result of training, similar input data are mapped onto neighboring regions of the supra-hexagonal map. More formally, the map ensembles the structure (the shape and density) of the input data in a topology-preserving fashion. Each map node is associated with two coordinates: one in two-dimensional output space just as you have seen; the other in high-dimensional input space as you can imagine. The coordinate in input space is represented as a prototype/weight vector (with the same dimension as input data vector). Prototype vectors in all map nodes collectively form the codebook matrix. In essence, the supra-hexagonal map converts the input data into the codebook matrix. In terms of gene activity matrix as input, \Rpackage{supraHex} produces a map, wherein (i) genes with the same or similar activity patterns are spatially located/clustered to the same or nearby map nodes, (ii) the density of genes mapped onto this map (i.e. what we can see) is an equivalent to the data density in  high-dimensional input space (i.e. what we can only imagine), and (iii) when all map nodes are color-coded according to values in a specific component for all prototype vectors (i.e. a specific column of codebook matrix), a color-coded component map can be used to illustrate sample-specific gene activities, and thus multiple components illustrate changes across all samples in subject. Owing to  these unique features, the supra-hexagonal map can be used for gene clustering and sample representation. 
 
-
+\newpage
 %------------------------------------------------------------
 \section{Installation and Citation}
 \label{sec:inst}
@@ -130,20 +130,29 @@ biocLite("supraHex",depend=TRUE)
 library(supraHex) # load the package
 @
 
+To get help information for the package, please type one of two commands:
+<<eval=F, echo=T>>=
+library(help="supraHex") # real-time help
+help.start() # html help (follow the links to supraHex)
+@
+
+To view this vignette source and R code whereof, please type:
+<<eval=F, echo=T>>=
+browseVignettes("supraHex")
+@
+
 \Rpackage{supraHex} is free to use under GPL 2. You can get citation information from: 
 <<eval=F, echo=T>>=
 citation("supraHex") # cite the package
 @
 
+
+\newpage
 %------------------------------------------------------------
 \section{Quick Overview}\label{sec:overview}
 %------------------------------------------------------------
 
-The functions in the package \Rpackage{supraHex} are divided into two categories: one for training and analysis (see Table~\ref{tab:train}), the other for visualisation (see Table~\ref{tab:visual}). To get help information for the package, please type one of two commands:
-<<eval=F, echo=T>>=
-library(help="supraHex") # real-time help
-help.start() # html help (follow the links to supraHex)
-@
+The functions in the package \Rpackage{supraHex} are divided into two categories: one for training and analysis (see Table~\ref{tab:train}), the other for visualisation (see Table~\ref{tab:visual}). 
 
 
 \begin{table}[!Hb]
@@ -160,6 +169,7 @@ Function & Description \\
 \Rfunction{sInitial} & Initialise a sMap object given a topology and input data; return a \Robject{sMap} object. \\
 \Rfunction{sTrainology} & Define trainology (training environment); return a \Robject{sTrain} object. \\
 \Rfunction{sTrainSeq} & Implement training via sequential algorithm; return a \Robject{sMap} object. \\
+\Rfunction{sTrainBatch} & Implement training via batch algorithm; return a \Robject{sMap} object. \\
 \Rfunction{sBMH} & Identify the best-matching hexagons for the input data; return a list. \\
 \Rfunction{sPipeline} & Setup the pipeline for completing ab initio training given the input data; return a \Robject{sMap} object. \\
 \Rfunction{sNeighDirect} & Calculate direct neighbors for each hexagon in a grid; return a matrix. \\
@@ -356,7 +366,7 @@ You will see: the first column for your input data ID (an integer; otherwise the
 
 Reordering components for trained map can be realised by using a new map grid (with sheep shape consisting of a rectangular lattice) to train component plane vectors (either column-wise vectors of codebook/data matrix or the covariance matrix thereof). As a result, similar component planes are placed closer to each other. The functions \Rfunction{sCompReorder} and \Rfunction{visCompReorder} are respectively to implement this reordering algorithm and to visualise the reordered compments (see Figure~\ref{supraHex_vignettes-sReorder})\footnote{In order to display colors properly, it is important to reset the argument 'zlim' by respecting the range of input data matrix (more precisely, codebook matrix). By default, it is set to c(0,1). The simplest way is to first choose the range from the global minimum of your input data matrix to the global maximum, and then to fine-tune this choose for the best display.}. 
 
-<<results=hide, echo=T>>=
+<<eval=F, results=hide, echo=T>>=
 sReorder <- sCompReorder(sMap=sMap, amplifier=2, metric="cos")
 visCompReorder(sMap=sMap, sReorder=sReorder)
 @
@@ -438,11 +448,10 @@ This dataset (the learning set\footnote{\url{http://www.ncbi.nlm.nih.gov/pubmed/
 \begin{verbatim}
 # import data
 data(Golub)
-?Golub
 data <- Golub
 # get trained
-sMap <- sPipeline(data, neighKernel="ep")
-visHexMulComp(sMap,colormap="yr",title.rotate=10,gp=grid::gpar(cex=0.8))
+sMap <- sPipeline(data, neighKernel="bubble")
+visHexMulComp(sMap,colormap="wyr",title.rotate=10)
 sWriteData(sMap, data, filename="Output_Golub.txt")
 # get visualised
 visHexMapping(sMap, mappingType="indexes")
@@ -450,8 +459,7 @@ visHexMapping(sMap, mappingType="hits")
 visHexMapping(sMap, mappingType="dist")
 # get reordered
 sReorder <- sCompReorder(sMap,amplifier=2,metric="pearson")
-visCompReorder(sMap,sReorder,colormap="yr",title.rotate=10,
-gp=grid::gpar(cex=0.8))
+visCompReorder(sMap,sReorder,colormap="wyr",title.rotate=10)
 \end{verbatim}
 
 %-------------------------------
@@ -471,7 +479,6 @@ This dataset\footnote{\url{http://www.ncbi.nlm.nih.gov/pubmed/20643359}} involve
 \begin{verbatim}
 # import data
 data(Fang)
-?Fang
 # transform data by row/gene centering
 data <- Fang - matrix(rep(apply(Fang,1,mean),ncol(Fang)),ncol=ncol(Fang))
 # get trained
@@ -504,7 +511,6 @@ This dataset\footnote{\url{http://www.ncbi.nlm.nih.gov/pubmed/21402797}} contain
 \begin{verbatim}
 # import data
 data(Xiang)
-?Xiang
 data <- Xiang
 # get trained
 sMap <- sPipeline(data)

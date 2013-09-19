@@ -35,7 +35,7 @@
 #' \item{iv) \code{\link{sBMH}} used to identify the best-matching hexagons/rectangles (BMH) for the input data, and these response data are appended to the resulting object of "sMap" class.}
 #' }
 #' @export
-#' @seealso \code{\link{sTopology}}, \code{\link{sInitial}}, \code{\link{sTrainology}}, \code{\link{sTrainSeq}}, \code{\link{sBMH}}, \code{\link{visHexMulComp}}
+#' @seealso \code{\link{sTopology}}, \code{\link{sInitial}}, \code{\link{sTrainology}}, \code{\link{sTrainSeq}}, \code{\link{sTrainBatch}}, \code{\link{sBMH}}, \code{\link{visHexMulComp}}
 #' @include sPipeline.r
 #' @examples
 #' # 1) generate an iid normal random matrix of 100x10 
@@ -57,8 +57,14 @@
 #' # 3) visualise multiple component planes of a supra-hexagonal grid
 #' visHexMulComp(sMap, colormap="jet", ncolors=20, zlim=c(-1,1), gp=grid::gpar(cex=0.8))
 
-sPipeline <- function(data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("hexa","rect"), shape=c("suprahex","sheet"), init=c("uniform","sample","linear"), algorithm=c("sequential"), alphaType=c("invert","linear","power"), neighKernel=c("gaussian","bubble","cutgaussian","ep","gamma"), finetuneSustain=F, verbose=T)
+sPipeline <- function(data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("hexa","rect"), shape=c("suprahex","sheet"), init=c("uniform","sample","linear"), algorithm=c("batch","sequential"), alphaType=c("invert","linear","power"), neighKernel=c("gaussian","bubble","cutgaussian","ep","gamma"), finetuneSustain=F, verbose=T)
 {
+
+    startT <- Sys.time()
+    message(paste(c("Start at ",as.character(startT)), collapse=""), appendLF=T)
+    message("", appendLF=T)
+    ####################################################################################
+    
     ## match.arg matches arg against a table of candidate values as specified by choices, where NULL means to take the first one
     lattice <- match.arg(lattice)
     shape <- match.arg(shape)
@@ -77,13 +83,21 @@ sPipeline <- function(data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("hex
     
     ## get training at the rough stage
     if (verbose) message("Third, get training at the rough stage...", appendLF=T)
-    sT_rough <- sTrainology(sMap=sI, data=data, stage="rough", alphaType=alphaType, neighKernel=neighKernel)
-    sM_rough <- sTrainSeq(sMap=sI, data=data, sTrain=sT_rough)
+    sT_rough <- sTrainology(sMap=sI, data=data, algorithm=algorithm, stage="rough", alphaType=alphaType, neighKernel=neighKernel)
+    if(algorithm == "sequential"){
+        sM_rough <- sTrainSeq(sMap=sI, data=data, sTrain=sT_rough)
+    }else{
+        sM_rough <- sTrainBatch(sMap=sI, data=data, sTrain=sT_rough)
+    }
 
     ## get training at the finetune stage
     if (verbose) message("Fourth, get training at the finetune stage...", appendLF=T)
-    sT_finetune <- sTrainology(sMap=sI, data=data, stage="finetune", alphaType=alphaType, neighKernel=neighKernel)
-    sM_finetune <- sTrainSeq(sMap=sM_rough, data=data, sTrain=sT_finetune)
+    sT_finetune <- sTrainology(sMap=sI, data=data, algorithm=algorithm, stage="finetune", alphaType=alphaType, neighKernel=neighKernel)
+    if(algorithm == "sequential"){
+        sM_finetune <- sTrainSeq(sMap=sM_rough, data=data, sTrain=sT_finetune)
+    }else{
+        sM_finetune <- sTrainBatch(sMap=sM_rough, data=data, sTrain=sT_finetune)
+    }
     
     if(finetuneSustain){
         ## identify the best-matching hexagon/rectangle for the input data
@@ -100,7 +114,7 @@ sPipeline <- function(data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("hex
         mqe[k] <- round(response$mqe * 10)/10
     
         if(verbose){
-            message <- paste(c("\t", k, " iteration ", "with current mqe=", mqe[k], "\n"), collapse="")
+            message <- paste(c("\t", k, " iteration ", "with current mqe=", mqe[k]), collapse="")
             message(message, appendLF=T)
         }
     
@@ -109,7 +123,11 @@ sPipeline <- function(data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("hex
         while(flag){
             sM_pre <- sM_now
         
-            sM_now <- sTrainSeq(sMap=sM_pre, data=data, sTrain=sT_finetune)
+            if(algorithm == "sequential"){
+                sM_now <- sTrainSeq(sMap=sM_pre, data=data, sTrain=sT_finetune)
+            }else{
+                sM_now <- sTrainBatch(sMap=sM_pre, data=data, sTrain=sT_finetune)
+            }
             response <- sBMH(sMap=sM_now, data=data, which_bmh="best")
 
             k <- k+1
@@ -119,7 +137,7 @@ sPipeline <- function(data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("hex
             }
         
             if(verbose){
-                message <- paste(c("\t", k, " iteration ", "with current mqe=", mqe[k], "\n"), collapse="")
+                message <- paste(c("\t", k, " iteration ", "with current mqe=", mqe[k]), collapse="")
                 message(message, appendLF=T)
             }
         }
@@ -174,8 +192,18 @@ sPipeline <- function(data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("hex
         details[1] <- paste(c("   training algorithm: ", algorithm, "\n"), collapse="")
         details[2] <- paste(c("   alpha type: ", alphaType, "\n"), collapse="")
         details[3] <- paste(c("   training neighborhood kernel: ", neighKernel, "\n"), collapse="")
+        details[4] <- paste(c("   trainlength (x input data length): ", sT_rough$trainLength," at rough stage; ", sT_finetune$trainLength," at finetune stage", "\n"), collapse="")
+        details[5] <- paste(c("   radius (at rough stage): from ", sT_rough$radiusInitial," to ", sT_rough$radiusFinal, "\n"), collapse="")
+        details[6] <- paste(c("   radius (at finetune stage): from ", sT_finetune$radiusInitial," to ", sT_finetune$radiusFinal, "\n"), collapse="")
         message(details,appendLF=T)
-    }
+    }   
+    
+    ####################################################################################
+    endT <- Sys.time()
+    message(paste(c("End at ",as.character(endT)), collapse=""), appendLF=T)
+    
+    runTime <- as.numeric(difftime(strptime(endT, "%Y-%m-%d %H:%M:%S"), strptime(startT, "%Y-%m-%d %H:%M:%S"), units="secs"))
+    message(paste(c("Runtime in total is: ",runTime," secs\n"), collapse=""), appendLF=T)
     
     invisible(sMap)
 }

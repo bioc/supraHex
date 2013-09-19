@@ -32,7 +32,7 @@
 #' # 4) visualise clusters/bases partitioned from the sMap
 #' visDmatCluster(sMap,sBase)
 
-sDmatCluster <- function(sMap, which_neigh=1, distMeasure=c("median","mean","min","max"), clusterLinkage=c("bmh", "average","complete","single"))
+sDmatCluster <- function(sMap, which_neigh=1, distMeasure=c("median","mean","min","max"), clusterLinkage=c("average","complete","single","bmh"))
 {
     
     distMeasure <- match.arg(distMeasure)

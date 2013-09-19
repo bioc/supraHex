@@ -8,7 +8,7 @@ data(Xiang)
 }
 
 \description{
-Arabidopsis embryo dataset contains gene expression levels (3625 genes and 7 embryo samples) from Xiang et al. (2010).
+Arabidopsis embryo dataset contains gene expression levels (3625 genes and 7 embryo samples) from Xiang et al. (2011).
 This dataset has been pre-processed: capping into floor of intensity 777.6; 2-base logarithmic transformation; row/gene centering; and keeping genes with at least 2-fold changes (in any stage) as compared to the average over embryo stages.}
 
 \value{

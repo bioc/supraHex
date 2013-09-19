@@ -2,7 +2,8 @@
 \alias{sTrainology}
 \title{Function to define trainology (training environment)}
 \usage{
-  sTrainology(sMap, data, algorithm = c("sequential"),
+  sTrainology(sMap, data,
+    algorithm = c("batch", "sequential"),
     stage = c("rough", "finetune", "complete"),
     alphaType = c("invert", "linear", "power"),
     neighKernel = c("gaussian", "bubble", "cutgaussian", "ep", "gamma"))
@@ -58,13 +59,18 @@
   \item{"radiusFinal": it depends on the training stage}
   \itemize{ \item{At "rough" stage, it equals
   \eqn{radiusInitial/4}} \item{At "finetune" or "complete"
-  stage, it equals \eqn{1}} } \item{"trainLength": it
-  depends on the training stage} \itemize{ \item{At "rough"
-  stage, it equals \eqn{10 * trainDepth}} \item{At
-  "finetune" stage, it equals \eqn{40 * trainDepth}}
-  \item{At "complete" stage, it equals \eqn{50 *
-  trainDepth}} \item{Where \eqn{trainDepth} is the training
-  depth, defined as \eqn{nHex/dlen}, i.e., how many
+  stage, it equals \eqn{1}} } \item{"trainLength": how many
+  times the whole input data are set for training. It
+  depends on the training stage and training algorithm}
+  \itemize{ \item{At "rough" stage, it equals \eqn{max(1,10
+  * trainDepth)}} \item{At "finetune" stage, it equals
+  \eqn{max(1,40 * trainDepth)}} \item{At "complete" stage,
+  it equals \eqn{max(1,50 * trainDepth)}} \item{When using
+  "batch" algorithm and the trainLength equals 1 according
+  to the above equation, the trainLength is forced to be 2
+  unless \eqn{radiusInitial} equals \eqn{radiusFinal}}
+  \item{Where \eqn{trainDepth} is the training depth,
+  defined as \eqn{nHex/dlen}, i.e., how many
   hexagons/rectanges are used per the input data length
   (here \eqn{dlen} refers to the number of rows)} } }
 }

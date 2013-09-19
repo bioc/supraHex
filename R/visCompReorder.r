@@ -59,7 +59,7 @@ visCompReorder <-function (sMap, sReorder, margin=rep(0.1,4), height=7, title.ro
         vmax <- vsym
     }
     if(!is.null(zlim)){
-        if(zlim[1] < vmin | zlim[2] > vmax){
+        if(zlim[1] < floor(min(codebook)) | zlim[2] > ceiling(max(codebook))){
             zlim <- c(vmin,vmax)
         }
     }else{

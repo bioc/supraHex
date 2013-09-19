@@ -4,7 +4,7 @@
 \usage{
   sDmatCluster(sMap, which_neigh = 1,
     distMeasure = c("median", "mean", "min", "max"),
-    clusterLinkage = c("bmh", "average", "complete", "single"))
+    clusterLinkage = c("average", "complete", "single", "bmh"))
 }
 \arguments{
   \item{sMap}{an object of class "sMap"}

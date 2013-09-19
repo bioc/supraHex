@@ -30,11 +30,12 @@
 #' \item{At "rough" stage, it equals \eqn{radiusInitial/4}}
 #' \item{At "finetune" or "complete" stage, it equals \eqn{1}}
 #' }
-#' \item{"trainLength": it depends on the training stage}
+#' \item{"trainLength": how many times the whole input data are set for training. It depends on the training stage and training algorithm}
 #' \itemize{
-#' \item{At "rough" stage, it equals \eqn{10 * trainDepth}}
-#' \item{At "finetune" stage, it equals \eqn{40 * trainDepth}}
-#' \item{At "complete" stage, it equals \eqn{50 * trainDepth}}
+#' \item{At "rough" stage, it equals \eqn{max(1,10 * trainDepth)}}
+#' \item{At "finetune" stage, it equals \eqn{max(1,40 * trainDepth)}}
+#' \item{At "complete" stage, it equals \eqn{max(1,50 * trainDepth)}}
+#' \item{When using "batch" algorithm and the trainLength equals 1 according to the above equation, the trainLength is forced to be 2 unless \eqn{radiusInitial} equals \eqn{radiusFinal}}
 #' \item{Where \eqn{trainDepth} is the training depth, defined as \eqn{nHex/dlen}, i.e., how many hexagons/rectanges are used per the input data length (here \eqn{dlen} refers to the number of rows)}
 #' }
 #' }
@@ -60,7 +61,7 @@
 #' # 4c) define trainology using "complete" stage
 #' sT_complete <- sTrainology(sMap=sI, data=data, stage="complete")
 
-sTrainology <- function(sMap, data, algorithm=c("sequential"), stage=c("rough","finetune","complete"), alphaType=c("invert","linear","power"), neighKernel=c("gaussian","bubble","cutgaussian","ep","gamma"))
+sTrainology <- function(sMap, data, algorithm=c("batch","sequential"), stage=c("rough","finetune","complete"), alphaType=c("invert","linear","power"), neighKernel=c("gaussian","bubble","cutgaussian","ep","gamma"))
 {
     
     algorithm <- match.arg(algorithm)
@@ -86,7 +87,7 @@ sTrainology <- function(sMap, data, algorithm=c("sequential"), stage=c("rough","
     shape <- sMap$shape
     nHex <- sMap$nHex
     
-    ## training depth as defined as nHex per dlen
+    ## training depth being defined as nHex per dlen
     trainDepth <- nHex/dlen
     
     ## By default the learning rate (alpha) goes from the alphaInitial to 0 along the function defined by alphaType
@@ -125,11 +126,11 @@ sTrainology <- function(sMap, data, algorithm=c("sequential"), stage=c("rough","
                 radiusFinal <- 1
             }
             
-            trainLength=max(1,ceiling(40*trainDepth))
+            trainLength <- max(1,ceiling(40*trainDepth))
             
         }else if(stage=="complete"){
             
-            alphaInitial=0.5
+            alphaInitial <- 0.5
             
             if(shape == "sheet"){
                 radiusInitial <- max(1,ceiling(max(xdim,ydim)/8))
@@ -143,6 +144,62 @@ sTrainology <- function(sMap, data, algorithm=c("sequential"), stage=c("rough","
             trainLength=max(1,ceiling(50*trainDepth))
             
         }
+    }else if(algorithm == "batch"){
+        if(stage == "rough"){
+
+            alphaInitial <- NA
+            
+            if(shape == "sheet"){
+                radiusInitial <- max(1,ceiling(max(xdim,ydim)/8))
+                radiusFinal <- max(1,radiusInitial/4)
+            }else if(shape == "suprahex"){
+                r <- (xdim+1)/2
+                radiusInitial <- max(1,ceiling(r/2))
+                radiusFinal <- max(1,radiusInitial/4)
+            }
+            
+            trainLength <- max(1,ceiling(10*trainDepth))
+            
+        }else if(stage=="finetune"){
+            
+            alphaInitial <- NA
+            
+            if(shape == "sheet"){
+                radiusInitial <- max(1,ceiling(max(xdim,ydim)/32)) # i.e., radiusFinal at rough stage
+                radiusFinal <- 1
+            }else if(shape == "suprahex"){
+                r <- (xdim+1)/2
+                radiusInitial <- max(1,ceiling(r/2))
+                radiusInitial <- max(1,radiusInitial/4) # i.e., radiusFinal at rough stage
+                radiusFinal <- 1
+            }
+            
+            trainLength <- max(1,ceiling(40*trainDepth))
+            
+        }else if(stage=="complete"){
+            
+            alphaInitial <- NA
+            
+            if(shape == "sheet"){
+                radiusInitial <- max(1,ceiling(max(xdim,ydim)/8))
+                radiusFinal <- 1
+            }else if(shape == "suprahex"){
+                r <- (xdim+1)/2
+                radiusInitial <- max(1,ceiling(r/2))
+                radiusFinal <- 1
+            }
+            
+            trainLength=max(1,ceiling(50*trainDepth))
+            
+        }
+        
+        ## trainLength is always no less than 2 if radiusInitial is larger than radiusFinal
+        if(trainLength == 1){
+            if(radiusInitial > radiusFinal){
+                trainLength <- 2
+            }
+        }
+        
     }
     
     sTrain <- list(algorithm = algorithm,

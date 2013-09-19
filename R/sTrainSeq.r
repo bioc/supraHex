@@ -1,6 +1,6 @@
 #' Function to implement training via sequential algorithm
 #'
-#' \code{sTrainSeq} is supposed to perform sequential training algorithm. It requires three inputs: a "sMap" object, input data, and a "sTrain" object specifying training environment. The training is implemented iteratively, each training cycle consisting of: i) randomly choose one input vector; ii) determine the winner hexagon/rectangle (BMH) according to minumum distance of codebook matrix to the input vector; ii) update the codebook matrix of the BMH and its neighbors via updating formula (see "Note" below for details). It also returns an object of class "sMap".
+#' \code{sTrainSeq} is supposed to perform sequential training algorithm. It requires three inputs: a "sMap" object, input data, and a "sTrain" object specifying training environment. The training is implemented iteratively, each training cycle consisting of: i) randomly choose one input vector; ii) determine the winner hexagon/rectangle (BMH) according to minimum distance of codebook matrix to the input vector; ii) update the codebook matrix of the BMH and its neighbors via updating formula (see "Note" below for details). It also returns an object of class "sMap".
 #'
 #' @param sMap an object of class "sMap"
 #' @param data a data frame or matrix of input data

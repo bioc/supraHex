@@ -42,7 +42,7 @@
 #' title.rotate=0, title.xy=c(0.45, 1), colormap="gbr", ncolors=10, zlim=c(-1,1), 
 #' border.color="transparent")
 
-sCompReorder <- function(sMap, xdim=NULL, ydim=NULL, amplifier=NULL, metric=c("none","pearson","spearman","kendall","euclidean","manhattan","cos","mi"), init=c("uniform","sample","linear"), algorithm=c("sequential"), alphaType=c("invert","linear","power"), neighKernel=c("gaussian","bubble","cutgaussian","ep","gamma"))
+sCompReorder <- function(sMap, xdim=NULL, ydim=NULL, amplifier=NULL, metric=c("none","pearson","spearman","kendall","euclidean","manhattan","cos","mi"), init=c("uniform","sample","linear"), algorithm=c("sequential","batch"), alphaType=c("invert","linear","power"), neighKernel=c("gaussian","bubble","cutgaussian","ep","gamma"))
 {
 
     ## match.arg matches arg against a table of candidate values as specified by choices, where NULL means to take the first one
@@ -75,7 +75,7 @@ sCompReorder <- function(sMap, xdim=NULL, ydim=NULL, amplifier=NULL, metric=c("n
     sTopol <- sTopology(data=D, xdim=xdim, ydim=ydim, nHex=nHex, lattice="rect", shape="sheet")
     
     ## setup the pipeline for completing ab initio training given the input data
-    sM <- sPipeline(data=D, xdim=sTopol$ydim, ydim=sTopol$xdim, lattice="rect", shape="sheet", init=init, algorithm=algorithm, alphaType=alphaType, neighKernel=neighKernel, verbose=F)
+    sM <- sPipeline(data=D, xdim=sTopol$ydim, ydim=sTopol$xdim, lattice="rect", shape="sheet", init=init, algorithm=algorithm, alphaType=alphaType, neighKernel=neighKernel, verbose=T)
     
     ## identify the best-matching hexagon/rectangle for the input data
     res <- sBMH(sMap=sM, data=D, which_bmh="all")

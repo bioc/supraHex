@@ -32,7 +32,7 @@
   training environment. The training is implemented
   iteratively, each training cycle consisting of: i)
   randomly choose one input vector; ii) determine the
-  winner hexagon/rectangle (BMH) according to minumum
+  winner hexagon/rectangle (BMH) according to minimum
   distance of codebook matrix to the input vector; ii)
   update the codebook matrix of the BMH and its neighbors
   via updating formula (see "Note" below for details). It

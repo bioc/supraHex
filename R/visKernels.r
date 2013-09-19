@@ -15,7 +15,7 @@
 #' }
 #' These kernels above are displayed within a plot for each fixed radius. Three different radii (i.e., 1 and 2) are illustrated. 
 #' @export
-#' @seealso \code{\link{sTrainSeq}}
+#' @seealso \code{\link{sTrainSeq}}, \code{\link{sTrainBatch}}
 #' @include visKernels.r
 #' @examples
 #' # visualise currently supported five kernels

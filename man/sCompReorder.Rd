@@ -6,7 +6,7 @@
     amplifier = NULL,
     metric = c("none", "pearson", "spearman", "kendall", "euclidean", "manhattan", "cos", "mi"),
     init = c("uniform", "sample", "linear"),
-    algorithm = c("sequential"),
+    algorithm = c("sequential", "batch"),
     alphaType = c("invert", "linear", "power"),
     neighKernel = c("gaussian", "bubble", "cutgaussian", "ep", "gamma"))
 }
