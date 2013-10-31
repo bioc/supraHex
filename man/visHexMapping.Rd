@@ -11,7 +11,8 @@
     clip = c("on", "inherit", "off"), newpage = T)
 }
 \arguments{
-  \item{sObj}{an object of class "sMap" or "sTopol"}
+  \item{sObj}{an object of class "sMap" or "sInit" or
+  "sTopol"}
 
   \item{mappingType}{the mapping type, can be "indexes",
   "hits", "dist", "antidist", "bases", and "customized"}

@@ -1,8 +1,8 @@
 #' Function to implement training via sequential algorithm
 #'
-#' \code{sTrainSeq} is supposed to perform sequential training algorithm. It requires three inputs: a "sMap" object, input data, and a "sTrain" object specifying training environment. The training is implemented iteratively, each training cycle consisting of: i) randomly choose one input vector; ii) determine the winner hexagon/rectangle (BMH) according to minimum distance of codebook matrix to the input vector; ii) update the codebook matrix of the BMH and its neighbors via updating formula (see "Note" below for details). It also returns an object of class "sMap".
+#' \code{sTrainSeq} is supposed to perform sequential training algorithm. It requires three inputs: a "sMap" or "sInit" object, input data, and a "sTrain" object specifying training environment. The training is implemented iteratively, each training cycle consisting of: i) randomly choose one input vector; ii) determine the winner hexagon/rectangle (BMH) according to minimum distance of codebook matrix to the input vector; ii) update the codebook matrix of the BMH and its neighbors via updating formula (see "Note" below for details). It also returns an object of class "sMap".
 #'
-#' @param sMap an object of class "sMap"
+#' @param sMap an object of class "sMap" or "sInit"
 #' @param data a data frame or matrix of input data
 #' @param sTrain an object of class "sTrain"
 #' @return 
@@ -14,6 +14,7 @@
 #'  \item{shape}{the grid shape}
 #'  \item{coord}{a matrix of nHex x 2, with each row corresponding to the coordinates of a hexagon/rectangle in the 2D map grid}
 #'  \item{init}{an initialisation method}
+#'  \item{neighKernel}{the training neighborhood kernel}
 #'  \item{codebook}{a codebook matrix of nHex x ncol(data), with each row corresponding to a prototype vector in input high-dimensional space}
 #'  \item{call}{the call that produced this result}
 #' @note Updating formula is: \eqn{m_i(t+1) = m_i(t) + \alpha(t)*h_{wi}(t)*[x(t)-m_i(t)]}, where 
@@ -67,8 +68,8 @@
 sTrainSeq <- function(sMap, data, sTrain)
 {
     
-    if (class(sMap) != "sMap" ){
-        stop("The funciton must apply to a 'sMap' object.\n")
+    if (class(sMap) != "sMap" & class(sMap) != "sInit"){
+        stop("The funciton must apply to either 'sMap' or 'sInit' object.\n")
     }
     xdim <- sMap$xdim
     ydim <- sMap$ydim
@@ -196,6 +197,7 @@ sTrainSeq <- function(sMap, data, sTrain)
                    shape = sMap$shape,
                    coord = sMap$coord,
                    init = sMap$init,
+                   neighKernel = sTrain$neighKernel,
                    codebook = M,
                    call = match.call(),
                    method = "suprahex")

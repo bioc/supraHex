@@ -9,12 +9,12 @@
     neighKernel = c("gaussian", "bubble", "cutgaussian", "ep", "gamma"))
 }
 \arguments{
-  \item{sMap}{an object of class "sMap"}
+  \item{sMap}{an object of class "sMap" or "sInit"}
 
   \item{data}{a data frame or matrix of input data}
 
-  \item{algorithm}{the training algorithm. Currently, only
-  "sequential" algorithm has been implemented}
+  \item{algorithm}{the training algorithm. It can be one of
+  "sequential" and "batch" algorithm}
 
   \item{stage}{the training stage. The training can be
   achieved using two stages (i.e., "rough" and "finetune")

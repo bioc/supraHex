@@ -18,7 +18,7 @@
 }
 \value{
   \item{dMat}{a vector with the length of nHex. It stores
-  the distance a hexaon/rectangle is awawy from its
+  the distance a hexaon/rectangle is away from its
   output-space-defined neighbors in high-dimensional input
   space}
 }

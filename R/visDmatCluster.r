@@ -9,7 +9,7 @@
 #' @param area.size an inteter or a vector specifying the area size of each hexagon
 #' @param gp an object of class "gpar". It is the output from a call to the function "gpar" (i.e., a list of graphical parameter settings)
 #' @param border.color the border color for each hexagon
-#' @param colormap short name for the colormap
+#' @param colormap short name for the colormap. It can be one of "jet" (jet colormap), "bwr" (blue-white-red colormap), "gbr" (green-black-red colormap), "wyr" (white-yellow-red colormap), "br" (black-red colormap), "yr" (yellow-red colormap), "wb" (white-black colormap), and "rainbow" (rainbow colormap, that is, red-yellow-green-cyan-blue-magenta). Alternatively, any hyphen-separated HTML color names, e.g. "blue-black-yellow", "royalblue-white-sandybrown", "darkgreen-white-darkviolet". A list of standard color names can be found in \url{http://html-color-codes.info/color-names}
 #' @param clip either "on" for clipping to the extent of this viewport, "inherit" for inheriting the clipping region from the parent viewport, or "off" to turn clipping off altogether
 #' @param newpage logical to indicate whether to open a new page. By default, it sets to true for opening a new page
 #' @return 
@@ -32,10 +32,10 @@
 #' # 4) visualise clusters/bases partitioned from the sMap
 #' visDmatCluster(sMap,sBase)
 
-visDmatCluster <- function (sMap, sBase, height=7, margin=rep(0.1,4), area.size=1, gp=grid::gpar(cex=0.8, font=2, col.label="black"),  border.color="transparent", colormap=c("rainbow","jet","bwr","gbr","wyr","br","yr"), clip=c("on","inherit","off"), newpage=T)
+visDmatCluster <- function (sMap, sBase, height=7, margin=rep(0.1,4), area.size=1, gp=grid::gpar(cex=0.8, font=2, col.label="black"),  border.color="transparent", colormap=c("rainbow","jet","bwr","gbr","wyr","br","yr","wb"), clip=c("on","inherit","off"), newpage=T)
 {
     
-    colormap <- match.arg(colormap)
+    #colormap <- match.arg(colormap)
     palette.name <- visColormap(colormap=colormap)
     
     if (class(sMap) != "sMap"){

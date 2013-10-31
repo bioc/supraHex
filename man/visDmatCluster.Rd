@@ -6,7 +6,7 @@
     margin = rep(0.1, 4), area.size = 1,
     gp = grid::gpar(cex = 0.8, font = 2, col.label = "black"),
     border.color = "transparent",
-    colormap = c("rainbow", "jet", "bwr", "gbr", "wyr", "br", "yr"),
+    colormap = c("rainbow", "jet", "bwr", "gbr", "wyr", "br", "yr", "wb"),
     clip = c("on", "inherit", "off"), newpage = T)
 }
 \arguments{
@@ -28,7 +28,18 @@
 
   \item{border.color}{the border color for each hexagon}
 
-  \item{colormap}{short name for the colormap}
+  \item{colormap}{short name for the colormap. It can be
+  one of "jet" (jet colormap), "bwr" (blue-white-red
+  colormap), "gbr" (green-black-red colormap), "wyr"
+  (white-yellow-red colormap), "br" (black-red colormap),
+  "yr" (yellow-red colormap), "wb" (white-black colormap),
+  and "rainbow" (rainbow colormap, that is,
+  red-yellow-green-cyan-blue-magenta). Alternatively, any
+  hyphen-separated HTML color names, e.g.
+  "blue-black-yellow", "royalblue-white-sandybrown",
+  "darkgreen-white-darkviolet". A list of standard color
+  names can be found in
+  \url{http://html-color-codes.info/color-names}}
 
   \item{clip}{either "on" for clipping to the extent of
   this viewport, "inherit" for inheriting the clipping

@@ -2,12 +2,12 @@
 #'
 #' \code{visHexPattern} is supposed to codebook matrix or input patterns within a supra-hexagonal grid.
 #'
-#' @param sObj an object of class "sMap" or "sTopol"
+#' @param sObj an object of class "sMap" or "sTopol" or "sInit"
 #' @param plotType the plot type, can be "lines" for line/point graph, "bars" for bar graph, "radars" for radar graph
 #' @param pattern By default, it sets to "NULL" for the codebook matrix. It is intended for the user-input patterns, i.e., a matrix with the dimension of nHex x nPattern, where nHex is the number of hexagons and nPattern is the number of elements for each pattern
 #' @param height a numeric value specifying the height of device
 #' @param margin margins as units of length 4 or 1
-#' @param colormap short name for the predifined colormap, and "customized" for custom input (see the next 'customized.color')
+#' @param colormap short name for the predifined colormap, and "customized" for custom input (see the next 'customized.color'). The predifined colormap can be one of "jet" (jet colormap), "bwr" (blue-white-red colormap), "gbr" (green-black-red colormap), "wyr" (white-yellow-red colormap), "br" (black-red colormap), "yr" (yellow-red colormap), "wb" (white-black colormap), and "rainbow" (rainbow colormap, that is, red-yellow-green-cyan-blue-magenta). Alternatively, any hyphen-separated HTML color names, e.g. "blue-black-yellow", "royalblue-white-sandybrown", "darkgreen-white-darkviolet". A list of standard color names can be found in \url{http://html-color-codes.info/color-names}
 #' @param customized.color the customized color for pattern visualisation
 #' @param zeropattern.color the color for zero horizental line
 #' @param legend.cex a numerical value giving the amount by which legend text should be magnified relative to the default (i.e., 1)
@@ -60,14 +60,18 @@
 #' # 4d) for radar plot
 #' visHexPattern(sMap, plotType="radars", pattern=pattern, customized.color=rep(c("red","green"),each=3))
 
-visHexPattern <- function (sObj, plotType=c("lines","bars","radars"), pattern=NULL, height=7, margin=rep(0.1,4), colormap=c("customized","bwr","jet","gbr","wyr","br","yr","rainbow"), customized.color="red", zeropattern.color="gray", legend.cex=0.8, newpage=T)
+visHexPattern <- function (sObj, plotType=c("lines","bars","radars"), pattern=NULL, height=7, margin=rep(0.1,4), colormap=c("customized","bwr","jet","gbr","wyr","br","yr","rainbow","wb"), customized.color="red", zeropattern.color="gray", legend.cex=0.8, newpage=T)
 {
     
     plotType <- match.arg(plotType)
-    colormap <- match.arg(colormap)
     
-    if(class(sObj) != "sTopol" & class(sObj) != "sMap"){
-        stop("The funciton must apply to either 'sTopol' or 'sMap' object.\n")
+    if(length(colormap)>1){
+        colormap <- colormap[1]
+    }
+    #colormap <- match.arg(colormap)
+    
+    if (class(sObj) != "sTopol" & class(sObj) != "sInit" & class(sObj) != "sMap"){
+        stop("The funciton must apply to either 'sTopol' or 'sInit' or 'sMap' object.\n")
     }
     nHex <- sObj$nHex
     

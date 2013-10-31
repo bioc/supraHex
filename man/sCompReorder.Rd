@@ -5,7 +5,7 @@
   sCompReorder(sMap, xdim = NULL, ydim = NULL,
     amplifier = NULL,
     metric = c("none", "pearson", "spearman", "kendall", "euclidean", "manhattan", "cos", "mi"),
-    init = c("uniform", "sample", "linear"),
+    init = c("linear", "uniform", "sample"),
     algorithm = c("sequential", "batch"),
     alphaType = c("invert", "linear", "power"),
     neighKernel = c("gaussian", "bubble", "cutgaussian", "ep", "gamma"))
@@ -20,10 +20,10 @@
   \item{ydim}{an integer specifying y-dimension of the
   grid}
 
-  \item{amplifier}{an integer specifying the amplifier of
-  the number of component planes. The product of the
-  component number and the amplifier constitutes the number
-  of rectangles in the sheet grid}
+  \item{amplifier}{an integer specifying the amplifier (3
+  by default) of the number of component planes. The
+  product of the component number and the amplifier
+  constitutes the number of rectangles in the sheet grid}
 
   \item{metric}{distance metric used to difine the
   similarity between component planes. It can be "none",
@@ -72,7 +72,9 @@
   train component plane vectors (either column-wise vectors
   of codebook/data matrix or the covariance matrix
   thereof). As a result, similar component planes are
-  placed closer to each other.
+  placed closer to each other. It is highly recommend to
+  use trained map (i.e. codebook matrix) as input if data
+  matrix is hugely big to save computational costs.
 }
 \note{
   To ensure the unique placement, each component plane
@@ -94,8 +96,12 @@ sMap <- sPipeline(data=data)
 
 # 3) reorder component planes in different ways
 # 3a) directly using column-wise vectors of codebook matrix
+sReorder <- sCompReorder(sMap=sMap, amplifier=2, metric="none")
+# 3b) according to covariance matrix of pearson correlation of codebook matrix
+sReorder <- sCompReorder(sMap=sMap, amplifier=2, metric="pearson")
+# 3c) directly using column-wise vectors of input matrix
 sReorder <- sCompReorder(sMap=data, amplifier=2, metric="none")
-# 3b) according to covariance matrix of pearson correlation thereof
+# 3d) according to covariance matrix of pearson correlation of input matrix
 sReorder <- sCompReorder(sMap=data, amplifier=2, metric="pearson")
 
 # 4) visualise multiple component planes reorded within a sheet-shape rectangle grid

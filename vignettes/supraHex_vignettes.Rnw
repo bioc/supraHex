@@ -123,10 +123,22 @@ As a result of training, similar input data are mapped onto neighboring regions 
 \label{sec:inst}
 %------------------------------------------------------------
 
-\Rpackage{supraHex} is a package for the R computing environment and it is assumed that you have already installed the latest version of R. You can install the package from the source codes following step-by-step guidelines in \url{http://supfam.org/SUPERFAMILY/dcGO/supraHex.html}. Or, you can obtain it from Bioconductor:
+\Rpackage{supraHex} is a package for the R computing environment and it is assumed that you have already installed the latest version of R. You can install the package following step-by-step guidelines in \url{http://supfam.org/SUPERFAMILY/dcGO/supraHex.html}. Briefly, you can install it from Bioconductor:
+
+Using the release version\footnote{\url{http://www.bioconductor.org/packages/2.13/bioc/html/supraHex.html}} (officially released on 15-10-2013):
 <<eval=F, echo=T>>=
 source("http://bioconductor.org/biocLite.R")
-biocLite("supraHex",depend=TRUE)
+biocLite("supraHex")
+library(supraHex) # load the package
+@
+
+Using the development version\footnote{\url{http://bioconductor.org/packages/devel/bioc/html/supraHex.html}} (\underline{prefer it for the benefit of latest improvements}):
+<<eval=F, echo=T>>=
+source("http://bioconductor.org/biocLite.R")
+biocLite("BiocInstaller")
+library(BiocInstaller)
+useDevel(devel=T)
+biocLite("supraHex")
 library(supraHex) # load the package
 @
 
@@ -181,6 +193,7 @@ Function & Description \\
 \Rfunction{sDmatCluster} & Partition a grid map into clusters; return a list. \\
 \Rfunction{sCompReorder} & Reorder component planes; return a \Robject{sReorder} object. \\
 \Rfunction{sWriteData} & Write out the best-matching hexagons and/or cluster bases in terms of data; return a data frame. \\
+\Rfunction{sMapOverlay} & Overlay additional data onto the trained map; return a \Robject{sMap} object. \\
 \hline
 \end{tabular}
 \end{center}
@@ -234,7 +247,7 @@ The first 5 rows of this data:
 data[1:5,]
 @
 
-You can prepare your own data (a tab-delimited text file). Similarly as shown above, this file should contain the first row intended for sample names, the first column for gene names, and the top-left entry being left empty. You can import it using the R built-in function \Rfunction{read.table} :
+You can prepare your own data (a tab-delimited text file). Similarly as shown above, this file should contain the first row intended for sample names, the first column for gene names, and the top-left entry being left empty. You can import it using the R built-in function \Rfunction{read.table}:
 
 <<eval=F, echo=T>>=
 data <- read.table(file="you_input_data_file", header=T, row.names=1, sep="\t")
@@ -350,7 +363,7 @@ dev.off()
 @
 \myincfig{supraHex_vignettes-cluster}{1\textwidth}{Clusters of the trained map}{Each cluster is filled with the same continuous color. The cluster index is marked in the seed node.}
 
-\underline{It is equivalent to meta-gene clustering}. Write out results into a tab-delimited text file using \Rfunction{sWriteData}:
+\underline{It is equivalent to gene meta-clustering}. Write out results into a tab-delimited text file using \Rfunction{sWriteData}:
 
 <<>>=
 # it will also write out a file ('Output_base.txt') into your disk
@@ -358,7 +371,7 @@ output <- sWriteData(sMap, data, sBase, filename="Output_base.txt")
 output[1:5,]
 @
 
-You will see: the first column for your input data ID (an integer; otherwise the row names of input data matrix), the second column for the corresponding index of best-matching hexagons (i.e. gene clusters), and the third column for the cluster bases (i.e. meta-gene clusters).
+You will see: the first column for your input data ID (an integer; otherwise the row names of input data matrix), the second column for the corresponding index of best-matching hexagons (i.e. gene clusters), and the third column for the cluster bases (i.e. gene meta-clusters).
 
 %-------------------------------
 \subsection{Get reordered using \texttt{sCompReorder} and \texttt{visCompReorder}}\label{subsec:reorder}
@@ -367,12 +380,12 @@ You will see: the first column for your input data ID (an integer; otherwise the
 Reordering components for trained map can be realised by using a new map grid (with sheep shape consisting of a rectangular lattice) to train component plane vectors (either column-wise vectors of codebook/data matrix or the covariance matrix thereof). As a result, similar component planes are placed closer to each other. The functions \Rfunction{sCompReorder} and \Rfunction{visCompReorder} are respectively to implement this reordering algorithm and to visualise the reordered compments (see Figure~\ref{supraHex_vignettes-sReorder})\footnote{In order to display colors properly, it is important to reset the argument 'zlim' by respecting the range of input data matrix (more precisely, codebook matrix). By default, it is set to c(0,1). The simplest way is to first choose the range from the global minimum of your input data matrix to the global maximum, and then to fine-tune this choose for the best display.}. 
 
 <<eval=F, results=hide, echo=T>>=
-sReorder <- sCompReorder(sMap=sMap, amplifier=2, metric="cos")
+sReorder <- sCompReorder(sMap=sMap)
 visCompReorder(sMap=sMap, sReorder=sReorder)
 @
 \myincfig{supraHex_vignettes-sReorder}{1.2\textwidth}{Reordered components of trained map}{Each component illustrates the sample-specific map and is placed within a two-dimensional rectangular lattice (framed in black). Within each component, genes with the same or similar expression patterns are mapped to the same or nearby map nodes. When zooming out to look at between-components/samples relationships, samples with the similar expression profiles are placed closer to each other.}
 
-\underline{It is equivalent to sample projection}. Reordered components are rich in the information: both of genes and samples can be visualised but in a single display. 
+\underline{It is equivalent to sample projection}. Reordered components are rich in the information: both of genes and samples can be visualised but in a single display.
 
 
 %------------------------------------------------------------
@@ -388,41 +401,41 @@ dev.off()
 @
 \myincfig{supraHex_vignettes-kernels}{1\textwidth}{Neighborhood kernels}{There are five kernels that are currently supported in the package \Rpackage{supraHex}. These kernels are displayed within a plot for each fixed radius; two different radii (i.e. 1 and 2) are illustrated only.}
 
-From the mathematical definitions and curve forms above, it is clear that the "gamma" and "gaussian" kernels exert more global influence, the "ep" kernel puts more emphasis on local topological relationships, and the other two "cutgaussian" and "bubble" keep the relative balance. It becomes much clearer when using the function \Rfunction{visHexMulComp} to visualise trained maps using the same data input and the same trainology but choosing different kernels (see Figure~\ref{supraHex_vignettes-sMap_ga}, Figure~\ref{supraHex_vignettes-sMap_bu}, Figure~\ref{supraHex_vignettes-sMap_cu}, Figure~\ref{supraHex_vignettes-sMap_ep} and Figure~\ref{supraHex_vignettes-sMap_gm})\footnote{In order to display colors properly, it is important to reset the argument 'zlim' by respecting the range of input data matrix (more precisely, codebook matrix). By default, it is set to c(0,1). The simplest way is to first choose the range from the global minimum of your input data matrix to the global maximum, and then to fine-tune this choose for the best display.}. 
+From the mathematical definitions and curve forms above, it is clear that the "gamma" and "gaussian" kernels exert more global influence, the "ep" kernel puts more emphasis on local topological relationships, and the other two "cutgaussian" and "bubble" keep the relative balance. It becomes much clearer when using the function \Rfunction{visHexMulComp} to visualise trained maps using the same data input and the same trainology but choosing different kernels (see Figure~\ref{supraHex_vignettes-sMap_ga}, Figure~\ref{supraHex_vignettes-sMap_bu}, Figure~\ref{supraHex_vignettes-sMap_cu}, Figure~\ref{supraHex_vignettes-sMap_ep} and Figure~\ref{supraHex_vignettes-sMap_gm})\footnote{In order to display colors properly, it is important to reset the argument 'zlim' by respecting the range of input data matrix (more precisely, codebook matrix). The simplest way is to first choose the range from the global minimum of your input data matrix to the global maximum, and then to fine-tune this choose for the best display.}. 
 
 \begin{itemize} \itemsep1pt \parskip0pt \parsep0pt
 
 \item with "gaussian" kernel (see Figure~\ref{supraHex_vignettes-sMap_ga})
 <<eval=F, echo=T>>=
-sMap_ga <- sPipeline(data=data, neighKernel="gaussian", verbose=F)
+sMap_ga <- sPipeline(data=data, neighKernel="gaussian", init="uniform")
 visHexMulComp(sMap_ga)
 @
 \myincfig{supraHex_vignettes-sMap_ga}{0.8\textwidth}{Components of trained map with the gaussian kernel}{}
 
 \item with "bubble" kernel (see Figure~\ref{supraHex_vignettes-sMap_bu})
 <<eval=F, results=hide, echo=T>>=
-sMap_bu <- sPipeline(data=data, neighKernel="bubble", verbose=F)
+sMap_bu <- sPipeline(data=data, neighKernel="bubble", init="uniform")
 visHexMulComp(sMap_bu)
 @
 \myincfig{supraHex_vignettes-sMap_bu}{0.8\textwidth}{Components of trained map with the bubble kernel}{}
 
 \item with "cutgaussian" kernel (see Figure~\ref{supraHex_vignettes-sMap_cu})
 <<eval=F, results=hide, echo=T>>=
-sMap_cu <- sPipeline(data=data, neighKernel="cutgaussian", verbose=F)
+sMap_cu <- sPipeline(data=data, neighKernel="cutgaussian", init="uniform")
 visHexMulComp(sMap_cu)
 @
 \myincfig{supraHex_vignettes-sMap_cu}{0.8\textwidth}{Components of trained map with the cutgaussian kernel}{}
 
 \item with "ep" kernel (see Figure~\ref{supraHex_vignettes-sMap_ep})
 <<eval=F, results=hide, echo=T>>=
-sMap_ep <- sPipeline(data=data, neighKernel="ep", verbose=F)
+sMap_ep <- sPipeline(data=data, neighKernel="ep", init="uniform")
 visHexMulComp(sMap_ep)
 @
 \myincfig{supraHex_vignettes-sMap_ep}{0.8\textwidth}{Components of trained map with the ep kernel}{}
 
 \item with "gamma" kernel (see Figure~\ref{supraHex_vignettes-sMap_gm})
 <<eval=F, results=hide, echo=T>>=
-sMap_gm <- sPipeline(data=data, neighKernel="gamma", verbose=F)
+sMap_gm <- sPipeline(data=data, neighKernel="gamma", init="uniform")
 visHexMulComp(sMap_gm)
 @
 \myincfig{supraHex_vignettes-sMap_gm}{0.8\textwidth}{Components of trained map with the gamma kernel}{}
@@ -450,16 +463,17 @@ This dataset (the learning set\footnote{\url{http://www.ncbi.nlm.nih.gov/pubmed/
 data(Golub)
 data <- Golub
 # get trained
-sMap <- sPipeline(data, neighKernel="bubble")
-visHexMulComp(sMap,colormap="wyr",title.rotate=10)
+sMap <- sPipeline(data)
+visHexMulComp(sMap,colormap="darkgreen-lightgreen-lightpink-darkred",title.rotate=10)
 sWriteData(sMap, data, filename="Output_Golub.txt")
 # get visualised
 visHexMapping(sMap, mappingType="indexes")
 visHexMapping(sMap, mappingType="hits")
 visHexMapping(sMap, mappingType="dist")
 # get reordered
-sReorder <- sCompReorder(sMap,amplifier=2,metric="pearson")
-visCompReorder(sMap,sReorder,colormap="wyr",title.rotate=10)
+sReorder <- sCompReorder(data,metric="pearson")
+visCompReorder(sMap,sReorder,
+colormap="darkgreen-lightgreen-lightpink-darkred",title.rotate=15)
 \end{verbatim}
 
 %-------------------------------
@@ -483,7 +497,7 @@ data(Fang)
 data <- Fang - matrix(rep(apply(Fang,1,mean),ncol(Fang)),ncol=ncol(Fang))
 # get trained
 sMap <- sPipeline(data)
-visHexMulComp(sMap, title.rotate=10)
+visHexMulComp(sMap,title.rotate=10)
 sWriteData(sMap, data, filename="Output_Fang.txt")
 # get visualised
 visHexMapping(sMap, mappingType="indexes")
@@ -496,8 +510,8 @@ sBase <- sDmatCluster(sMap)
 visDmatCluster(sMap, sBase)
 sWriteData(sMap, data, sBase, filename="Output_base_Fang.txt")
 # get reordered
-sReorder <- sCompReorder(sMap, amplifier=3, metric="none")
-visCompReorder(sMap, sReorder, title.rotate=10)
+sReorder <- sCompReorder(data, metric="euclidean")
+visCompReorder(sMap, sReorder,title.rotate=15)
 \end{verbatim}
 
 %-------------------------------
@@ -514,7 +528,7 @@ data(Xiang)
 data <- Xiang
 # get trained
 sMap <- sPipeline(data)
-visHexMulComp(sMap, title.rotate=10)
+visHexMulComp(sMap,colormap="darkblue-white-darkorange",title.rotate=10)
 sWriteData(sMap, data, filename="Output_Xiang.txt")
 # get visualised
 visHexMapping(sMap, mappingType="indexes")
@@ -527,8 +541,8 @@ sBase <- sDmatCluster(sMap)
 visDmatCluster(sMap, sBase)
 sWriteData(sMap, data, sBase, filename="Output_base_Xiang.txt")
 # get reordered
-sReorder <- sCompReorder(sMap, amplifier=3, metric="pearson")
-visCompReorder(sMap, sReorder, title.rotate=10)
+sReorder <- sCompReorder(sMap, metric="pearson")
+visCompReorder(sMap,sReorder,colormap="darkblue-white-darkorange",title.rotate=10)
 \end{verbatim}
 
 %------------------------------------------------------------

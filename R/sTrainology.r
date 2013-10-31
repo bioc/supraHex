@@ -2,9 +2,9 @@
 #'
 #' \code{sTrainology} is supposed to define the train-ology (i.e., the training environment/parameters). The trainology here refers to the training algorithm, the training stage, the stage-specific parameters (alpha type, initial alpha, initial radius, final radius and train length), and the training neighbor kernel used. It returns an object of class "sTrain".
 #'
-#' @param sMap an object of class "sMap"
+#' @param sMap an object of class "sMap" or "sInit"
 #' @param data a data frame or matrix of input data
-#' @param algorithm the training algorithm. Currently, only "sequential" algorithm has been implemented
+#' @param algorithm the training algorithm. It can be one of "sequential" and "batch" algorithm
 #' @param stage the training stage. The training can be achieved using two stages (i.e., "rough" and "finetune") or one stage only (i.e., "complete")
 #' @param alphaType the alpha type. It can be one of "invert", "linear" and "power" alpha types
 #' @param neighKernel the training neighbor kernel. It can be one of "gaussian", "bubble", "cutgaussian", "ep" and "gamma" kernels
@@ -68,9 +68,9 @@ sTrainology <- function(sMap, data, algorithm=c("batch","sequential"), stage=c("
     stage <- match.arg(stage)
     alphaType <- match.arg(alphaType)
     neighKernel <- match.arg(neighKernel)
-    
-    if (class(sMap) != "sMap" ){
-        stop("The funciton must apply to a 'sMap' object.\n")
+        
+    if (class(sMap) != "sMap" & class(sMap) != "sInit"){
+        stop("The funciton must apply to either 'sMap' or 'sInit' object.\n")
     }
     
     if (is.vector(data)){

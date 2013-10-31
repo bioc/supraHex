@@ -2,7 +2,7 @@
 #'
 #' \code{sNeighDirect} is supposed to calculate direct neighbors for each hexagon/rectangle in a regular 2D grid. It returns a matrix with rows for the self, and columns for its direct neighbors. 
 #'
-#' @param sObj an object of class "sTopol" or "sMap"
+#' @param sObj an object of class "sTopol" or "sInit" or "sMap"
 #' @return 
 #'  \item{dNeigh}{a matrix of nHex x nHex, containing presence/absence info in terms of direct neighbors, where nHex is the total number of hexagons/rectanges in the grid}
 #' @note The return matrix has rows for the self, and columns for its direct neighbors. The "1" means the presence of direct neighbors, "0" for the absence. It has rows/columns ordered in the same order as the "coord" matrix of the input object does.
@@ -29,8 +29,8 @@
 sNeighDirect <- function(sObj)
 {
 
-    if (class(sObj) != "sTopol" & class(sObj) != "sMap"){
-        stop("The funciton must apply to either 'sTopol' or 'sMap' object.\n")
+    if (class(sObj) != "sTopol" & class(sObj) != "sInit" & class(sObj) != "sMap"){
+        stop("The funciton must apply to either 'sTopol' or 'sInit' or 'sMap' object.\n")
     }
     
     nHex <- sObj$nHex

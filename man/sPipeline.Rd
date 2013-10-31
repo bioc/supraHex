@@ -5,7 +5,7 @@
   sPipeline(data = NULL, xdim = NULL, ydim = NULL,
     nHex = NULL, lattice = c("hexa", "rect"),
     shape = c("suprahex", "sheet"),
-    init = c("uniform", "sample", "linear"),
+    init = c("linear", "uniform", "sample"),
     algorithm = c("batch", "sequential"),
     alphaType = c("invert", "linear", "power"),
     neighKernel = c("gaussian", "bubble", "cutgaussian", "ep", "gamma"),
@@ -33,8 +33,8 @@
   \item{init}{an initialisation method. It can be one of
   "uniform", "sample" and "linear" initialisation methods}
 
-  \item{algorithm}{the training algorithm. Currently, only
-  "sequential" algorithm has been implemented}
+  \item{algorithm}{the training algorithm. It can be one of
+  "sequential" and "batch" algorithm}
 
   \item{alphaType}{the alpha type. It can be one of
   "invert", "linear" and "power" alpha types}
@@ -61,10 +61,11 @@
   shape} \item{coord}{a matrix of nHex x 2, with rows
   corresponding to the coordinates of all
   hexagons/rectangles in the 2D map grid} \item{init}{an
-  initialisation method} \item{codebook}{a codebook matrix
-  of nHex x ncol(data), with rows corresponding to
-  prototype vectors in input high-dimensional space}
-  \item{hits}{a vector of nHex, each element meaning that a
+  initialisation method} \item{neighKernel}{the training
+  neighborhood kernel} \item{codebook}{a codebook matrix of
+  nHex x ncol(data), with rows corresponding to prototype
+  vectors in input high-dimensional space} \item{hits}{a
+  vector of nHex, each element meaning that a
   hexagon/rectangle contains the number of input data
   vectors being hit wherein} \item{mqe}{the mean
   quantization error for the "best" BMH} \item{call}{the

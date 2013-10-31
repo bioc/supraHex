@@ -2,7 +2,7 @@
 #'
 #' \code{visHexMapping} is supposed to visualise various mapping items within a supra-hexagonal grid
 #'
-#' @param sObj an object of class "sMap" or "sTopol"
+#' @param sObj an object of class "sMap" or "sInit" or "sTopol"
 #' @param mappingType the mapping type, can be "indexes", "hits", "dist", "antidist", "bases", and "customized"
 #' @param labels NULL or a vector with the length of nHex
 #' @param height a numeric value specifying the height of device
@@ -54,8 +54,8 @@ visHexMapping <- function (sObj, mappingType=c("indexes","hits","dist","antidist
     
     mappingType <- match.arg(mappingType)
     
-    if(class(sObj) != "sTopol" & class(sObj) != "sMap"){
-        stop("The funciton must apply to either 'sTopol' or 'sMap' object.\n")
+    if (class(sObj) != "sTopol" & class(sObj) != "sInit" & class(sObj) != "sMap"){
+        stop("The funciton must apply to either 'sTopol' or 'sInit' or 'sMap' object.\n")
     }
     
     dat <- data.frame(sObj$coord)

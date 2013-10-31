@@ -4,7 +4,7 @@
 \usage{
   visHexComp(sMap, comp, margin = rep(0.6, 4),
     area.size = 1,
-    colormap = c("bwr", "jet", "gbr", "wyr", "br", "yr", "rainbow"),
+    colormap = c("bwr", "jet", "gbr", "wyr", "br", "yr", "rainbow", "wb"),
     ncolors = 40, zlim = c(0, 1),
     border.color = "transparent", newpage = T)
 }
@@ -19,7 +19,18 @@
   \item{area.size}{an inteter or a vector specifying the
   area size of each hexagon}
 
-  \item{colormap}{short name for the colormap}
+  \item{colormap}{short name for the colormap. It can be
+  one of "jet" (jet colormap), "bwr" (blue-white-red
+  colormap), "gbr" (green-black-red colormap), "wyr"
+  (white-yellow-red colormap), "br" (black-red colormap),
+  "yr" (yellow-red colormap), "wb" (white-black colormap),
+  and "rainbow" (rainbow colormap, that is,
+  red-yellow-green-cyan-blue-magenta). Alternatively, any
+  hyphen-separated HTML color names, e.g.
+  "blue-black-yellow", "royalblue-white-sandybrown",
+  "darkgreen-white-darkviolet". A list of standard color
+  names can be found in
+  \url{http://html-color-codes.info/color-names}}
 
   \item{ncolors}{the number of colors specified}
 

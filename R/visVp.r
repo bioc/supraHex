@@ -37,28 +37,25 @@ visVp <-function (height=7, xdim=1, ydim=1, colNum=1, rowNum=1, gp=grid::gpar())
     for(j in rowNum:1){
         for(i in 1:colNum){
         
-            k <- k+1
             if(j == rowNum){
+                k <- k+1
                 vpnames[k] <- paste("R", 0, "C", i, sep="")
                 grid::pushViewport(grid::viewport(x=unitWidth*(i-1), y=unitHeight*(j-1), w=unitWidth, h=unitHeight, just=c("left","bottom"), name=vpnames[k]))
                 grid::upViewport()
                 
             }else{
                 if(i == colNum){
-                
-                    vpnames[k] <- paste("colorbar", "R", j, sep="")
-                    if(0){
-                    if(j == rowNum-1 ){
-                        vpnames[k] <- paste("colorbar", sep="")
-                    }else{
-                        vpnames[k] <- paste("R", j, "C", 0, sep="")
+                    
+                    if(j == 1){
+                        k <- k+1
+                        vpnames[k] <- paste("colorbar", "R", j, sep="")
+                    
+                        ## y being moved unitHeight*0.1, and the unitHeight being scaled by 0.8
+                        grid::pushViewport(grid::viewport(x=unitWidth*(i-1), y=unitHeight*(j-1)+unitHeight*0.1, w=unitWidth, h=unitHeight*0.8, just=c("left","bottom"), name=vpnames[k]))
+                        grid::upViewport() 
                     }
-                    }
-                    ## y being moved unitHeight*0.1, and the unitHeight being scaled by 0.8
-                    grid::pushViewport(grid::viewport(x=unitWidth*(i-1), y=unitHeight*(j-1)+unitHeight*0.1, w=unitWidth, h=unitHeight*0.8, just=c("left","bottom"), name=vpnames[k]))
-                    grid::upViewport() 
-                
                 }else{
+                    k <- k+1
                     vpnames[k] <- paste("R", j, "C", i, sep="")
                     grid::pushViewport(grid::viewport(x=unitWidth*(i-1), y=unitHeight*(j-1), w=unitWidth, h=unitHeight, just = c("left", "bottom"), name = vpnames[k]))
                     grid::upViewport() 

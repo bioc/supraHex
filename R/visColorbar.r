@@ -2,7 +2,7 @@
 #'
 #' \code{visColorbar} is supposed to define a colorbar
 #'
-#' @param colormap short name for the colormap
+#' @param colormap short name for the colormap. It can be one of "jet" (jet colormap), "bwr" (blue-white-red colormap), "gbr" (green-black-red colormap), "wyr" (white-yellow-red colormap), "br" (black-red colormap), "yr" (yellow-red colormap), "wb" (white-black colormap), and "rainbow" (rainbow colormap, that is, red-yellow-green-cyan-blue-magenta). Alternatively, any hyphen-separated HTML color names, e.g. "blue-black-yellow", "royalblue-white-sandybrown", "darkgreen-white-darkviolet". A list of standard color names can be found in \url{http://html-color-codes.info/color-names}
 #' @param ncolors the number of colors specified
 #' @param zlim the minimum and maximum z values for which colors should be plotted, defaulting to the range of the finite values of z. Each of the given colors will be used to color an equispaced interval of this range. The midpoints of the intervals cover the range, so that values just outside the range will be plotted
 #' @param gp an object of class gpar, typically the output from a call to the function gpar (i.e., a list of graphical parameter settings)
@@ -16,10 +16,10 @@
 #' # draw "blue-white-red" colorbar
 #' visColorbar(colormap="bwr")
 
-visColorbar <-function (colormap=c("bwr","jet","gbr","wyr","br","yr","rainbow"), ncolors=40, zlim=c(0,1), gp=grid::gpar()) 
+visColorbar <-function (colormap=c("bwr","jet","gbr","wyr","br","yr","rainbow","wb"), ncolors=40, zlim=c(0,1), gp=grid::gpar()) 
 {
 
-    colormap <- match.arg(colormap)
+    #colormap <- match.arg(colormap)
     palette.name <- visColormap(colormap=colormap) 
     
     colors <- palette.name(ncolors)

@@ -5,7 +5,7 @@
   sTrainBatch(sMap, data, sTrain)
 }
 \arguments{
-  \item{sMap}{an object of class "sMap"}
+  \item{sMap}{an object of class "sMap" or "sInit"}
 
   \item{data}{a data frame or matrix of input data}
 
@@ -20,6 +20,7 @@
   shape} \item{coord}{a matrix of nHex x 2, with each row
   corresponding to the coordinates of a hexagon/rectangle
   in the 2D map grid} \item{init}{an initialisation method}
+  \item{neighKernel}{the training neighborhood kernel}
   \item{codebook}{a codebook matrix of nHex x ncol(data),
   with each row corresponding to a prototype vector in
   input high-dimensional space} \item{call}{the call that
@@ -27,16 +28,16 @@
 }
 \description{
   \code{sTrainBatch} is supposed to perform batch training
-  algorithm. It requires three inputs: a "sMap" object,
-  input data, and a "sTrain" object specifying training
-  environment. The training is implemented iteratively, but
-  instead of choosing a single input vector, the whole
-  input matrix is used. In each training cycle, the whole
-  input matrix first land in the map through identifying
-  the corresponding winner hexagon/rectangle (BMH), and
-  then the codebook matrix is updated via updating formula
-  (see "Note" below for details). It returns an object of
-  class "sMap".
+  algorithm. It requires three inputs: a "sMap" or "sInit"
+  object, input data, and a "sTrain" object specifying
+  training environment. The training is implemented
+  iteratively, but instead of choosing a single input
+  vector, the whole input matrix is used. In each training
+  cycle, the whole input matrix first land in the map
+  through identifying the corresponding winner
+  hexagon/rectangle (BMH), and then the codebook matrix is
+  updated via updating formula (see "Note" below for
+  details). It returns an object of class "sMap".
 }
 \note{
   Updating formula is: \eqn{m_i(t+1) =

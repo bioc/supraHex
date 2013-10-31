@@ -1,9 +1,9 @@
 \name{sInitial}
 \alias{sInitial}
-\title{Function to initialise a sMap object given a topology and input data}
+\title{Function to initialise a sInit object given a topology and input data}
 \usage{
   sInitial(data, sTopol,
-    init = c("uniform", "sample", "linear"))
+    init = c("linear", "uniform", "sample"))
 }
 \arguments{
   \item{data}{a data frame or matrix of input data}
@@ -15,7 +15,7 @@
   "uniform", "sample" and "linear" initialisation methods}
 }
 \value{
-  an object of class "sMap", a list with following
+  an object of class "sInit", a list with following
   components: \item{nHex}{the total number of
   hexagons/rectanges in the grid} \item{xdim}{x-dimension
   of the grid} \item{ydim}{y-dimension of the grid}
@@ -30,10 +30,10 @@
 }
 \description{
   \code{sInitial} is supposed to initialise an object of
-  class "sMap" given a topology and input data. As a matter
-  of fact, it initialises the codebook matrix (in input
-  high-dimensional space). The return object inherits the
-  topology information (i.e., a "sTopol" object from
+  class "sInit" given a topology and input data. As a
+  matter of fact, it initialises the codebook matrix (in
+  input high-dimensional space). The return object inherits
+  the topology information (i.e., a "sTopol" object from
   \code{sTopology}), along with initialised codebook matrix
   and method used.
 }

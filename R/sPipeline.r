@@ -9,7 +9,7 @@
 #' @param lattice the grid lattice, either "hexa" for a hexagon or "rect" for a rectangle
 #' @param shape the grid shape, either "suprahex" for a supra-hexagonal grid or "sheet" for a hexagonal/rectangle sheet
 #' @param init an initialisation method. It can be one of "uniform", "sample" and "linear" initialisation methods
-#' @param algorithm the training algorithm. Currently, only "sequential" algorithm has been implemented
+#' @param algorithm the training algorithm. It can be one of "sequential" and "batch" algorithm
 #' @param alphaType the alpha type. It can be one of "invert", "linear" and "power" alpha types
 #' @param neighKernel the training neighborhood kernel. It can be one of "gaussian", "bubble", "cutgaussian", "ep" and "gamma" kernels
 #' @param finetuneSustain logical to indicate whether sustain the "finetune" training. If true, it will repeat the "finetune" stage until the mean quantization error does get worse. By default, it sets to true
@@ -23,6 +23,7 @@
 #'  \item{shape}{the grid shape}
 #'  \item{coord}{a matrix of nHex x 2, with rows corresponding to the coordinates of all hexagons/rectangles in the 2D map grid}
 #'  \item{init}{an initialisation method}
+#'  \item{neighKernel}{the training neighborhood kernel}
 #'  \item{codebook}{a codebook matrix of nHex x ncol(data), with rows corresponding to prototype vectors in input high-dimensional space}
 #'  \item{hits}{a vector of nHex, each element meaning that a hexagon/rectangle contains the number of input data vectors being hit wherein}
 #'  \item{mqe}{the mean quantization error for the "best" BMH}
@@ -57,7 +58,7 @@
 #' # 3) visualise multiple component planes of a supra-hexagonal grid
 #' visHexMulComp(sMap, colormap="jet", ncolors=20, zlim=c(-1,1), gp=grid::gpar(cex=0.8))
 
-sPipeline <- function(data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("hexa","rect"), shape=c("suprahex","sheet"), init=c("uniform","sample","linear"), algorithm=c("batch","sequential"), alphaType=c("invert","linear","power"), neighKernel=c("gaussian","bubble","cutgaussian","ep","gamma"), finetuneSustain=F, verbose=T)
+sPipeline <- function(data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("hexa","rect"), shape=c("suprahex","sheet"), init=c("linear","uniform","sample"), algorithm=c("batch","sequential"), alphaType=c("invert","linear","power"), neighKernel=c("gaussian","bubble","cutgaussian","ep","gamma"), finetuneSustain=F, verbose=T)
 {
 
     startT <- Sys.time()
@@ -163,6 +164,7 @@ sPipeline <- function(data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("hex
                    shape = sM_final$shape,
                    coord = sM_final$coord,
                    init = sM_final$init,
+                   neighKernel = sM_final$neighKernel,
                    codebook = sM_final$codebook,
                    hits = hits,
                    mqe = response$mqe,

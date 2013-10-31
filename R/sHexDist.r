@@ -2,7 +2,7 @@
 #'
 #' \code{sHexDist} is supposed to calculate euclidian distances between each pair of hexagons/rectangles in a 2D grid of input "sTopol" or "sMap" object. It returns a symmetric matrix containing pairwise distances. 
 #'
-#' @param sObj an object of class "sTopol" or "sMap"
+#' @param sObj an object of class "sTopol" or "sInit" or "sMap"
 #' @return 
 #'  \item{dist}{a symmetric matrix of nHex x nHex, containing pairwise distances, where nHex is the total number of hexagons/rectanges in the grid}
 #' @note The return matrix has rows/columns ordered in the same order as the "coord" matrix of the input object does.
@@ -29,8 +29,8 @@
 sHexDist <- function(sObj)
 {
 
-    if (class(sObj) != "sTopol" & class(sObj) != "sMap"){
-        stop("The funciton must apply to either 'sTopol' or 'sMap' object.\n")
+    if (class(sObj) != "sTopol" & class(sObj) != "sInit" & class(sObj) != "sMap"){
+        stop("The funciton must apply to either 'sTopol' or 'sInit' or 'sMap' object.\n")
     }
     
     coord <- sObj$coord

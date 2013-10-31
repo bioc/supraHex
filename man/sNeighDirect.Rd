@@ -5,7 +5,8 @@
   sNeighDirect(sObj)
 }
 \arguments{
-  \item{sObj}{an object of class "sTopol" or "sMap"}
+  \item{sObj}{an object of class "sTopol" or "sInit" or
+  "sMap"}
 }
 \value{
   \item{dNeigh}{a matrix of nHex x nHex, containing

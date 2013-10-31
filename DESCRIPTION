@@ -1,13 +1,13 @@
 Package: supraHex
 Type: Package
 Title: A supra-hexagonal map for analysing tabular omics data
-Version: 1.1.0
-Date: 2013-09-19
+Version: 1.1.1
+Date: 2013-10-31
 Author: Hai Fang and Julian Gough
 Maintainer: Hai Fang <hfang@cs.bris.ac.uk>
 Depends: R (>= 3.0.1), hexbin
 Imports: grid, MASS, Biobase
-Description: A supra-hexagonal map is a giant hexagon on a 2-dimensional grid seamlessly consisting of smaller hexagons. It is supposed to train, analyse and visualise a high-dimensional omics data. The supraHex is able to carray out gene/meta-gene clustering and sample correlation, plus intuitive visualisations to facilitate exploratory analysis. Uniquely to this package, users can simultaneously understand their own omics data in a sample-specific fashion but without loss of information on large genes. 
+Description: A supra-hexagonal map is a giant hexagon on a 2-dimensional grid seamlessly consisting of smaller hexagons. It is supposed to train, analyse and visualise a high-dimensional omics data. The supraHex is able to carray out gene clustering/meta-clustering and sample correlation, plus intuitive visualisations to facilitate exploratory analysis. Uniquely to this package, users can simultaneously understand their own omics data in a sample-specific fashion but without loss of information on large genes.
 URL: http://supfam.org/SUPERFAMILY/dcGO/supraHex.html
 Collate: 
     sHexGrid.r
@@ -27,6 +27,7 @@ Collate:
     sDmatCluster.r
     sCompReorder.r
     sWriteData.r
+    sMapOverlay.r
     visHexGrid.r 
     visHexMapping.r 
     visHexComp.r 

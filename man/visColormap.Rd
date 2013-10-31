@@ -2,7 +2,7 @@
 \alias{visColormap}
 \title{Function to define a colormap}
 \usage{
-  visColormap(colormap = c("bwr", "jet", "gbr", "wyr", "br", "yr", "rainbow"))
+  visColormap(colormap = c("bwr", "jet", "gbr", "wyr", "br", "yr", "rainbow", "wb"))
 }
 \arguments{
   \item{colormap}{short name for the colormap}
@@ -23,8 +23,16 @@
   colormap} \item{"bwr": blue-white-red} \item{"gbr":
   green-black-red} \item{"wyr": white-yellow-red}
   \item{"br": black-red} \item{"yr": yellow-red}
-  \item{"rainbow": rainbow colormap, that is,
-  red-yellow-green-cyan-blue-magenta} }
+  \item{"wb": white-black} \item{"rainbow": rainbow
+  colormap, that is, red-yellow-green-cyan-blue-magenta}
+  \item{Alternatively, any hyphen-separated HTML color
+  names, e.g. "blue-black-yellow",
+  "royalblue-white-sandybrown",
+  "darkblue-lightblue-lightyellow-darkorange",
+  "darkgreen-white-darkviolet",
+  "darkgreen-lightgreen-lightpink-darkred". A list of
+  standard color names can be found in
+  \url{http://html-color-codes.info/color-names}} }
 }
 \examples{
 # 1) define "blue-white-red" colormap

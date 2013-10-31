@@ -1,8 +1,8 @@
 #' Function to implement training via batch algorithm
 #'
-#' \code{sTrainBatch} is supposed to perform batch training algorithm. It requires three inputs: a "sMap" object, input data, and a "sTrain" object specifying training environment. The training is implemented iteratively, but instead of choosing a single input vector, the whole input matrix is used. In each training cycle, the whole input matrix first land in the map through identifying the corresponding winner hexagon/rectangle (BMH), and then the codebook matrix is updated via updating formula (see "Note" below for details). It returns an object of class "sMap".
+#' \code{sTrainBatch} is supposed to perform batch training algorithm. It requires three inputs: a "sMap" or "sInit" object, input data, and a "sTrain" object specifying training environment. The training is implemented iteratively, but instead of choosing a single input vector, the whole input matrix is used. In each training cycle, the whole input matrix first land in the map through identifying the corresponding winner hexagon/rectangle (BMH), and then the codebook matrix is updated via updating formula (see "Note" below for details). It returns an object of class "sMap".
 #'
-#' @param sMap an object of class "sMap"
+#' @param sMap an object of class "sMap" or "sInit"
 #' @param data a data frame or matrix of input data
 #' @param sTrain an object of class "sTrain"
 #' @return 
@@ -14,6 +14,7 @@
 #'  \item{shape}{the grid shape}
 #'  \item{coord}{a matrix of nHex x 2, with each row corresponding to the coordinates of a hexagon/rectangle in the 2D map grid}
 #'  \item{init}{an initialisation method}
+#'  \item{neighKernel}{the training neighborhood kernel}
 #'  \item{codebook}{a codebook matrix of nHex x ncol(data), with each row corresponding to a prototype vector in input high-dimensional space}
 #'  \item{call}{the call that produced this result}
 #' @note Updating formula is: \eqn{m_i(t+1) = \frac{\sum_{j=1}^{dlen}h_{wi}(t)x_j}{\sum_{j=1}^{dlen}h_{wi}(t)}}, where 
@@ -60,8 +61,8 @@
 sTrainBatch <- function(sMap, data, sTrain)
 {
 
-    if (class(sMap) != "sMap" ){
-        stop("The funciton must apply to a 'sMap' object.\n")
+    if (class(sMap) != "sMap" & class(sMap) != "sInit"){
+        stop("The funciton must apply to either 'sMap' or 'sInit' object.\n")
     }
     xdim <- sMap$xdim
     ydim <- sMap$ydim
@@ -117,21 +118,21 @@ sTrainBatch <- function(sMap, data, sTrain)
         
         if(1){
         
-        response <- sBMH(M, D, which_bmh="best")
-        # bmh: the requested BMH matrix of dlen x length(which_bmh)
-        # qerr: the corresponding matrix of quantization errors
-        # mqe: average quantization error
-        bmh <- response$bmh
+            response <- sBMH(M, D, which_bmh="best")
+            # bmh: the requested BMH matrix of dlen x length(which_bmh)
+            # qerr: the corresponding matrix of quantization errors
+            # mqe: average quantization error
+            bmh <- response$bmh
         
         }else{
-        bmh <- matrix(0, nrow=dlen, ncol=1)
-        for (i in 1:dlen){
-            tmp_dist <- matrix(0, nrow=nHex, ncol=1)
-            for (j in 1:nHex){
-                tmp_dist[j] <- sum((D[i,] - M[j,])^2)
+            bmh <- matrix(0, nrow=dlen, ncol=1)
+            for (i in 1:dlen){
+                tmp_dist <- matrix(0, nrow=nHex, ncol=1)
+                for (j in 1:nHex){
+                    tmp_dist[j] <- sum((D[i,] - M[j,])^2)
+                }
+                bmh[i] <- min(which(tmp_dist == min(tmp_dist)))
             }
-            bmh[i] <- min(which(tmp_dist == min(tmp_dist)))
-        }
         }
         
         
@@ -167,6 +168,7 @@ sTrainBatch <- function(sMap, data, sTrain)
                    shape = sMap$shape,
                    coord = sMap$coord,
                    init = sMap$init,
+                   neighKernel = sTrain$neighKernel,
                    codebook = M,
                    call = match.call(),
                    method = "suprahex")

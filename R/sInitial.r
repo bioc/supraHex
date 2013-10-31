@@ -1,12 +1,12 @@
-#' Function to initialise a sMap object given a topology and input data
+#' Function to initialise a sInit object given a topology and input data
 #'
-#' \code{sInitial} is supposed to initialise an object of class "sMap" given a topology and input data. As a matter of fact, it initialises the codebook matrix (in input high-dimensional space). The return object inherits the topology information (i.e., a "sTopol" object from \code{sTopology}), along with initialised codebook matrix and method used.
+#' \code{sInitial} is supposed to initialise an object of class "sInit" given a topology and input data. As a matter of fact, it initialises the codebook matrix (in input high-dimensional space). The return object inherits the topology information (i.e., a "sTopol" object from \code{sTopology}), along with initialised codebook matrix and method used.
 #'
 #' @param data a data frame or matrix of input data
 #' @param sTopol an object of class "sTopol" (see \code{sTopology})
 #' @param init an initialisation method. It can be one of "uniform", "sample" and "linear" initialisation methods
 #' @return 
-#' an object of class "sMap", a list with following components:
+#' an object of class "sInit", a list with following components:
 #'  \item{nHex}{the total number of hexagons/rectanges in the grid}
 #'  \item{xdim}{x-dimension of the grid}
 #'  \item{ydim}{y-dimension of the grid}
@@ -41,7 +41,7 @@
 #' # 3c) using "linear" method
 #' # sI_linear <- sInitial(data=data, sTopol=sTopol, init="linear") 
 
-sInitial <- function(data, sTopol, init=c("uniform","sample","linear")) 
+sInitial <- function(data, sTopol, init=c("linear","uniform","sample")) 
 {
     init <- match.arg(init)
     
@@ -122,7 +122,7 @@ sInitial <- function(data, sTopol, init=c("uniform","sample","linear"))
     codebook <- matrix(codebook, nrow=nHex, ncol=ncol(data))
     colnames(codebook) <- colnames(data)
     
-    sMap <- list(  nHex = nHex, 
+    sInit <- list(  nHex = nHex, 
                    xdim = xdim, 
                    ydim = ydim,
                    lattice = sTopol$lattice,
@@ -133,7 +133,7 @@ sInitial <- function(data, sTopol, init=c("uniform","sample","linear"))
                    call = match.call(),
                    method = "suprahex")
     
-    class(sMap) <- "sMap"
+    class(sInit) <- "sInit"
     
-    invisible(sMap)
+    invisible(sInit)
 }

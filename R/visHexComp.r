@@ -6,7 +6,7 @@
 #' @param comp a component/column of codebook matrix from an object "sMap"
 #' @param margin margins as units of length 4 or 1
 #' @param area.size an inteter or a vector specifying the area size of each hexagon
-#' @param colormap short name for the colormap
+#' @param colormap short name for the colormap. It can be one of "jet" (jet colormap), "bwr" (blue-white-red colormap), "gbr" (green-black-red colormap), "wyr" (white-yellow-red colormap), "br" (black-red colormap), "yr" (yellow-red colormap), "wb" (white-black colormap), and "rainbow" (rainbow colormap, that is, red-yellow-green-cyan-blue-magenta). Alternatively, any hyphen-separated HTML color names, e.g. "blue-black-yellow", "royalblue-white-sandybrown", "darkgreen-white-darkviolet". A list of standard color names can be found in \url{http://html-color-codes.info/color-names}
 #' @param ncolors the number of colors specified
 #' @param zlim the minimum and maximum z values for which colors should be plotted, defaulting to the range of the finite values of z. Each of the given colors will be used to color an equispaced interval of this range. The midpoints of the intervals cover the range, so that values just outside the range will be plotted
 #' @param border.color the border color for each hexagon
@@ -28,10 +28,10 @@
 #' # 3) visualise the first component plane with a supra-hexagonal grid
 #' visHexComp(sMap, comp=sMap$codebook[,1], colormap="jet", ncolors=100, zlim=c(-1,1))
 
-visHexComp <-function (sMap, comp, margin=rep(0.6, 4), area.size=1, colormap=c("bwr","jet","gbr","wyr","br","yr","rainbow"), ncolors=40, zlim=c(0,1), border.color="transparent", newpage=T) 
+visHexComp <-function (sMap, comp, margin=rep(0.6, 4), area.size=1, colormap=c("bwr","jet","gbr","wyr","br","yr","rainbow","wb"), ncolors=40, zlim=c(0,1), border.color="transparent", newpage=T) 
 {
 
-    colormap <- match.arg(colormap)
+    #colormap <- match.arg(colormap)
     palette.name <- visColormap(colormap=colormap)
     
     if (class(sMap) != "sMap"){

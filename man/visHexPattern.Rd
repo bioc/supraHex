@@ -5,12 +5,13 @@
   visHexPattern(sObj,
     plotType = c("lines", "bars", "radars"),
     pattern = NULL, height = 7, margin = rep(0.1, 4),
-    colormap = c("customized", "bwr", "jet", "gbr", "wyr", "br", "yr", "rainbow"),
+    colormap = c("customized", "bwr", "jet", "gbr", "wyr", "br", "yr", "rainbow", "wb"),
     customized.color = "red", zeropattern.color = "gray",
     legend.cex = 0.8, newpage = T)
 }
 \arguments{
-  \item{sObj}{an object of class "sMap" or "sTopol"}
+  \item{sObj}{an object of class "sMap" or "sTopol" or
+  "sInit"}
 
   \item{plotType}{the plot type, can be "lines" for
   line/point graph, "bars" for bar graph, "radars" for
@@ -29,7 +30,18 @@
 
   \item{colormap}{short name for the predifined colormap,
   and "customized" for custom input (see the next
-  'customized.color')}
+  'customized.color'). The predifined colormap can be one
+  of "jet" (jet colormap), "bwr" (blue-white-red colormap),
+  "gbr" (green-black-red colormap), "wyr" (white-yellow-red
+  colormap), "br" (black-red colormap), "yr" (yellow-red
+  colormap), "wb" (white-black colormap), and "rainbow"
+  (rainbow colormap, that is,
+  red-yellow-green-cyan-blue-magenta). Alternatively, any
+  hyphen-separated HTML color names, e.g.
+  "blue-black-yellow", "royalblue-white-sandybrown",
+  "darkgreen-white-darkviolet". A list of standard color
+  names can be found in
+  \url{http://html-color-codes.info/color-names}}
 
   \item{customized.color}{the customized color for pattern
   visualisation}
