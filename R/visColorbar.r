@@ -37,13 +37,13 @@ visColorbar <-function (colormap=c("bwr","jet","gbr","wyr","br","yr","rainbow","
         
         if(i == 1 | i == 1+length(colors)/2){
             tx <- (i-1)/lab.scale + zlim[1]
-            grid::grid.text(tx, x=grid::unit(xtValue*1.1,"npc"), y=grid::unit(y-0.1*1/scale,"npc"), just=c("left","bottom"), gp=gp)
+            grid::grid.text(tx, x=grid::unit(xtValue*1.1,"npc"), y=grid::unit(y-0.1*1/scale,"npc"), just=c("left","center"), gp=gp)
         }
         
         if(i == length(colors)){
             y <- i/scale
             tx <- i/lab.scale + zlim[1]
-            grid::grid.text(tx, x=grid::unit(xtValue*1.1,"npc"), y=grid::unit(y-0.1*1/scale,"npc"), just=c("left","bottom"), gp=gp)
+            grid::grid.text(tx, x=grid::unit(xtValue*1.1,"npc"), y=grid::unit(y-0.1*1/scale,"npc"), just=c("left","center"), gp=gp)
         }
     }
     
