@@ -232,7 +232,7 @@ Function & Description \\
 %------------------------------------------------------------
 
 This vignette aims to demonstrate the functionality of the package
-\texttt{supraHex} in utilising the supra-hexagonal map to train, analyse and visualise a high-dimensional omics data. To simplify the descriptions, it deals with the gene expression data. But it can also be applied in any other omics data, a tabular matrix usually containing thousands of genes but with at most hundreds of samples. Assumedly, we have a gene expression matrix of $1000 \times 6$, measuring the expression levels of $1000$ genes across $6$ samples. These samples come from two different normal distributions (S1 and S2), and each (i.e., a matrix of $1000 \times 3$) is randomly generated from the same normal distribution.
+\texttt{supraHex} in utilising the supra-hexagonal map to train, analyse and visualise a high-dimensional omics data. To simplify the descriptions, it deals with the gene expression data. But it can also be applied in any other omics data, a tabular matrix usually containing thousands of genes but with at most hundreds of samples. Assumedly, we have a gene expression matrix of $1000 \times 6$, measuring the expression levels of $1000$ genes across $6$ samples. These samples come from two different normal distributions (S1 and S2), and each (i.e., a matrix of $1000 \times 3$) is randomly generated from the same normal distribution. All examples below are based on the latest development version\footnote{\url{http://bioconductor.org/packages/devel/bioc/html/supraHex.html}}. 
 
 <<startup,results=hide>>=
 data <- cbind(
@@ -464,7 +464,8 @@ data(Golub)
 data <- Golub
 # get trained
 sMap <- sPipeline(data)
-visHexMulComp(sMap,colormap="darkgreen-lightgreen-lightpink-darkred",title.rotate=10)
+visHexMulComp(sMap,title.rotate=10,
+colormap="darkgreen-lightgreen-lightpink-darkred")
 sWriteData(sMap, data, filename="Output_Golub.txt")
 # get visualised
 visHexMapping(sMap, mappingType="indexes")
@@ -472,8 +473,8 @@ visHexMapping(sMap, mappingType="hits")
 visHexMapping(sMap, mappingType="dist")
 # get reordered
 sReorder <- sCompReorder(data,metric="pearson")
-visCompReorder(sMap,sReorder,
-colormap="darkgreen-lightgreen-lightpink-darkred",title.rotate=15)
+visCompReorder(sMap,sReorder,title.rotate=15,
+colormap="darkgreen-lightgreen-lightpink-darkred")
 \end{verbatim}
 
 %-------------------------------
@@ -528,7 +529,7 @@ data(Xiang)
 data <- Xiang
 # get trained
 sMap <- sPipeline(data)
-visHexMulComp(sMap,colormap="darkblue-white-darkorange",title.rotate=10)
+visHexMulComp(sMap,title.rotate=10,colormap="darkblue-white-darkorange")
 sWriteData(sMap, data, filename="Output_Xiang.txt")
 # get visualised
 visHexMapping(sMap, mappingType="indexes")
@@ -542,7 +543,7 @@ visDmatCluster(sMap, sBase)
 sWriteData(sMap, data, sBase, filename="Output_base_Xiang.txt")
 # get reordered
 sReorder <- sCompReorder(sMap, metric="pearson")
-visCompReorder(sMap,sReorder,colormap="darkblue-white-darkorange",title.rotate=10)
+visCompReorder(sMap,sReorder,title.rotate=10,colormap="darkblue-white-darkorange")
 \end{verbatim}
 
 %------------------------------------------------------------
