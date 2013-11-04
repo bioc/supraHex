@@ -36,7 +36,7 @@
   \code{sMapOverlay} is supposed to overlay additional data
   onto the trained map for viewing the distribution of that
   additional data. It returns an object of class "sMap". It
-  is realized by first estimating the hit histogram
+  is realised by first estimating the hit histogram
   weighted by the neighborhood kernel, and then calculating
   the distribution of the additional data over the map
   (similarly weighted by the neighborhood kernel). The
@@ -44,14 +44,10 @@
   normalised by the hit histogram.
 }
 \note{
-  To ensure the unique placement, each component plane
-  mapped to the "sheet"-shape grid with rectangular lattice
-  is determinied iteratively in an order from the best
-  matched to the next compromised one. If multiple
-  compoments are hit in the same rectangular lattice, the
-  worse one is always sacrificed by moving to the next best
-  one till all components are placed somewhere exclusively
-  on their own.
+  Weighting by neighbor kernel is to avoid rigid overlaying
+  by only focusing on the best-matching map nodes as there
+  may exist several closest best-matching nodes for an
+  input data vector.
 }
 \examples{
 # 1) generate an iid normal random matrix of 100x10

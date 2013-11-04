@@ -35,8 +35,8 @@
   pearson correlation, "spearman" for spearman rank
   correlation, "kendall" for kendall tau rank correlation,
   "euclidean" for euclidean distance, "manhattan" for
-  cityblock distance, "cos" for consine similarity, "mi"
-  for mutual information. See \code{\link{sDistance}} for
+  cityblock distance, "cos" for cosine similarity, "mi" for
+  mutual information. See \code{\link{sDistance}} for
   details}
 
   \item{init}{an initialisation method. It can be one of
@@ -68,7 +68,7 @@
   \code{sCompReorder} is supposed to reorder component
   planes for the input map/data. It returns an object of
   class "sReorder". It is realized by using a new map grid
-  (with sheep shape consisting of a rectangular lattice) to
+  (with sheet shape consisting of a rectangular lattice) to
   train component plane vectors (either column-wise vectors
   of codebook/data matrix or the covariance matrix
   thereof). As a result, similar component planes are

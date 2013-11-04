@@ -1,6 +1,6 @@
 #' Function to overlay additional data onto the trained map for viewing the distribution of that additional data
 #'
-#' \code{sMapOverlay} is supposed to overlay additional data onto the trained map for viewing the distribution of that additional data. It returns an object of class "sMap". It is realized by first estimating the hit histogram weighted by the neighborhood kernel, and then calculating the distribution of the additional data over the map (similarly weighted by the neighborhood kernel). The final overlaid distribution of additional data is normalised by the hit histogram.
+#' \code{sMapOverlay} is supposed to overlay additional data onto the trained map for viewing the distribution of that additional data. It returns an object of class "sMap". It is realised by first estimating the hit histogram weighted by the neighborhood kernel, and then calculating the distribution of the additional data over the map (similarly weighted by the neighborhood kernel). The final overlaid distribution of additional data is normalised by the hit histogram.
 #'
 #' @param sMap an object of class "sMap"
 #' @param data a data frame or matrix of input data
@@ -19,7 +19,7 @@
 #'  \item{hits}{a vector of nHex, each element meaning that a hexagon/rectangle contains the number of input data vectors being hit wherein}
 #'  \item{mqe}{the mean quantization error for the "best" BMH}
 #'  \item{call}{the call that produced this result}
-#' @note To ensure the unique placement, each component plane mapped to the "sheet"-shape grid with rectangular lattice is determinied iteratively in an order from the best matched to the next compromised one. If multiple compoments are hit in the same rectangular lattice, the worse one is always sacrificed by moving to the next best one till all components are placed somewhere exclusively on their own.
+#' @note Weighting by neighbor kernel is to avoid rigid overlaying by only focusing on the best-matching map nodes as there may exist several closest best-matching nodes for an input data vector.
 #' @export
 #' @seealso \code{\link{sPipeline}}, \code{\link{sBMH}}, \code{\link{sHexDist}}, \code{\link{visHexMulComp}}
 #' @include sMapOverlay.r
