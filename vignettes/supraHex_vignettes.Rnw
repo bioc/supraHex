@@ -59,7 +59,7 @@ raiselinks,plainpages,pdftex]{hyperref}
 \SweaveOpts{concordance=TRUE}
 
 
-\title{\Rpackage{supraHex}: a supra-hexagonal map for analysing tabular omics data}
+\title{\Rpackage{supraHex}: an R/Bioconductor package for tabular omics data analysis using a supra-hexagonal map}
 \author{Hai Fang\footnote{\href{mailto:hfang@cs.bris.ac.uk}{hfang@cs.bris.ac.uk}} , Julian Gough \\ Department of Computer Science \\ University of Bristol, UK}
 \date{}
 \maketitle
@@ -68,7 +68,7 @@ raiselinks,plainpages,pdftex]{hyperref}
 %\setlength{\parskip}{0pt}
 \vspace{12pt}
 \begin{abstract}
-\noindent We introduce an R/Bioconductor package called \Rpackage{supraHex}\footnote{\url{http://supfam.org/SUPERFAMILY/dcGO/supraHex.html}}. It names after a supra-hexagon that is a giant hexagon on a 2-dimensional (2D) map grid seamlessly consisting of smaller hexagons. This 2D giant hexagon is intended to train, analyse and visualise a high-dimensional omics data, which usually involves tens of thousands of genomic coordinates (e.g. genes) but at most hundreds of samples. The resulting supra-hexagon ensembles the structure of the input data in a topology-preserving fashion. Thanks to the prevalence in nature and symmetric beauty, the supra-hexagon is suited for data exploratory analysis plus the ease with visualisation. In this vignette/guide, we give a tutorial-style introduction into how the functions contained in the package \Rpackage{supraHex} can be used to better understand the input data. This vignette assumes some basic familiarity with the \texttt{R} language and environment. It only provides a task-oriented description of the package functionality, and compliments the accompanying manual 'supraHex-manual.pdf' that gives a full description of all functions.
+\noindent We introduce an R/Bioconductor package called \Rpackage{supraHex}\footnote{\url{http://supfam.org/supraHex}}. It names after a supra-hexagon that is a giant hexagon on a 2-dimensional (2D) map grid seamlessly consisting of smaller hexagons. This 2D giant hexagon is intended to train, analyse and visualise a high-dimensional omics data, which usually involves a large number of genomic coordinates (e.g. genes) but a much smaller number of samples. The resulting supra-hexagon ensembles the structure of the input data in a topology-preserving fashion. With the supraHex, users are able to easily and intuitively carry out integrated tasks such as: simultaneous analysis of gene clustering and sample correlation, and the overlaying of additional data (if any) onto the map for multilayer omics data comparisons. In this vignette/guide, we give a tutorial-style introduction into how the functions contained in the package \Rpackage{supraHex} can be used to better understand the input omics data. This vignette assumes some basic familiarity with the \texttt{R} language and environment. It only provides a task-oriented description of the package functionality, and compliments the accompanying manual 'supraHex-manual.pdf' that gives a full description of all functions.
 \end{abstract}
 
 \newpage
@@ -123,7 +123,7 @@ As a result of training, similar input data are mapped onto neighboring regions 
 \label{sec:inst}
 %------------------------------------------------------------
 
-\Rpackage{supraHex} is a package for the R computing environment and it is assumed that you have already installed the latest version of R. You can install the package following step-by-step guidelines in \url{http://supfam.org/SUPERFAMILY/dcGO/supraHex.html}. Briefly, you can install it from Bioconductor:
+\Rpackage{supraHex} is a package for the R computing environment and it is assumed that you have already installed the latest version of R. You can install the package following step-by-step guidelines in \url{http://supfam.org/supraHex}. Briefly, you can install it from Bioconductor:
 
 Using the release version\footnote{\url{http://www.bioconductor.org/packages/2.13/bioc/html/supraHex.html}} (officially released on 15-10-2013):
 <<eval=F, echo=T>>=
@@ -139,6 +139,7 @@ biocLite("BiocInstaller")
 library(BiocInstaller)
 useDevel(devel=T)
 biocLite("supraHex")
+useDevel(devel=F)
 library(supraHex) # load the package
 @
 
@@ -157,6 +158,13 @@ browseVignettes("supraHex")
 <<eval=F, echo=T>>=
 citation("supraHex") # cite the package
 @
+
+Please cite this package as:\\ 
+\begingroup
+\fontsize{8pt}{10pt}\selectfont
+Fang H, Gough J. (2013) supraHex: an R/Bioconductor package for tabular omics data analysis using a supra-hexagonal map. \textit{Biochemical and Biophysical Research Communications}, doi: \url{http://dx.doi.org/10.1016/j.bbrc.2013.11.103}
+\endgroup
+
 
 
 \newpage
@@ -377,7 +385,7 @@ You will see: the first column for your input data ID (an integer; otherwise the
 \subsection{Get reordered using \texttt{sCompReorder} and \texttt{visCompReorder}}\label{subsec:reorder}
 %-------------------------------
 
-Reordering components for trained map can be realised by using a new map grid (with sheet shape consisting of a rectangular lattice) to train component plane vectors (either column-wise vectors of codebook/data matrix or the covariance matrix thereof). As a result, similar component planes are placed closer to each other. The functions \Rfunction{sCompReorder} and \Rfunction{visCompReorder} are respectively to implement this reordering algorithm and to visualise the reordered compments (see Figure~\ref{supraHex_vignettes-sReorder})\footnote{In order to display colors properly, it is important to reset the argument 'zlim' by respecting the range of input data matrix (more precisely, codebook matrix). By default, it is set to c(0,1). The simplest way is to first choose the range from the global minimum of your input data matrix to the global maximum, and then to fine-tune this choose for the best display.}. 
+Reordering components for trained map can be realised by using a new map grid (with sheet shape consisting of a rectangular lattice) to train component plane vectors (either column-wise vectors of codebook/data matrix or the covariance matrix thereof). As a result, similar component planes are placed closer to each other. The functions \Rfunction{sCompReorder} and \Rfunction{visCompReorder} are respectively to implement this reordering algorithm and to visualise the reordered compments (see Figure~\ref{supraHex_vignettes-sReorder})\footnote{In order to display colors properly, it is important to reset the argument 'zlim' by respecting the range of input data matrix (more precisely, codebook matrix).}. 
 
 <<eval=F, results=hide, echo=T>>=
 sReorder <- sCompReorder(sMap=sMap)
@@ -401,7 +409,7 @@ dev.off()
 @
 \myincfig{supraHex_vignettes-kernels}{1\textwidth}{Neighborhood kernels}{There are five kernels that are currently supported in the package \Rpackage{supraHex}. These kernels are displayed within a plot for each fixed radius; two different radii (i.e. 1 and 2) are illustrated only.}
 
-From the mathematical definitions and curve forms above, it is clear that the "gamma" and "gaussian" kernels exert more global influence, the "ep" kernel puts more emphasis on local topological relationships, and the other two "cutgaussian" and "bubble" keep the relative balance. It becomes much clearer when using the function \Rfunction{visHexMulComp} to visualise trained maps using the same data input and the same trainology but choosing different kernels (see Figure~\ref{supraHex_vignettes-sMap_ga}, Figure~\ref{supraHex_vignettes-sMap_bu}, Figure~\ref{supraHex_vignettes-sMap_cu}, Figure~\ref{supraHex_vignettes-sMap_ep} and Figure~\ref{supraHex_vignettes-sMap_gm})\footnote{In order to display colors properly, it is important to reset the argument 'zlim' by respecting the range of input data matrix (more precisely, codebook matrix). The simplest way is to first choose the range from the global minimum of your input data matrix to the global maximum, and then to fine-tune this choose for the best display.}. 
+From the mathematical definitions and curve forms above, it is clear that the "gamma" and "gaussian" kernels exert more global influence, the "ep" kernel puts more emphasis on local topological relationships, and the other two "cutgaussian" and "bubble" keep the relative balance. It becomes much clearer when using the function \Rfunction{visHexMulComp} to visualise trained maps using the same data input and the same trainology but choosing different kernels (see Figure~\ref{supraHex_vignettes-sMap_ga}, Figure~\ref{supraHex_vignettes-sMap_bu}, Figure~\ref{supraHex_vignettes-sMap_cu}, Figure~\ref{supraHex_vignettes-sMap_ep} and Figure~\ref{supraHex_vignettes-sMap_gm})\footnote{In order to display colors properly, it is important to reset the argument 'zlim' by respecting the range of input data matrix (more precisely, codebook matrix).}. 
 
 \begin{itemize} \itemsep1pt \parskip0pt \parsep0pt
 
@@ -458,6 +466,8 @@ This dataset (the learning set\footnote{\url{http://www.ncbi.nlm.nih.gov/pubmed/
 
 \myincfig{supraHex_vignettes-leukemia}{1.2\textwidth}{Reordered components of map for leukemia classification}{Each component illustrates a sample-specific transcriptome map. Geometric locations of components display the relationships between 38 leukemia samples. AML: acute myeloid leukemia; ALL: acute lymphoblastic leukemia; ALL\_B: B-cell ALL; ALL\_T: T-cell ALL.}
 
+\begingroup
+\fontsize{8pt}{10pt}\selectfont
 \begin{verbatim}
 # import data
 data(Golub)
@@ -476,6 +486,7 @@ sReorder <- sCompReorder(data,metric="pearson")
 visCompReorder(sMap,sReorder,title.rotate=15,
 colormap="darkgreen-lightgreen-lightpink-darkred")
 \end{verbatim}
+\endgroup
 
 %-------------------------------
 \subsection{Human embryo dataset from Fang et al}\label{subsec:embryo}
@@ -491,6 +502,8 @@ This dataset\footnote{\url{http://www.ncbi.nlm.nih.gov/pubmed/20643359}} involve
 
 \myincfig{supraHex_vignettes-embryo}{1.2\textwidth}{Reordered components of map during early human organogenesis}{Each component illustrates a sample-specific transcriptome map. Geometric locations of components display the relationships between the six developmental stages (S9-S14), each with three replicates (R1-R3).}
 
+\begingroup
+\fontsize{8pt}{10pt}\selectfont
 \begin{verbatim}
 # import data
 data(Fang)
@@ -514,6 +527,7 @@ sWriteData(sMap, data, sBase, filename="Output_base_Fang.txt")
 sReorder <- sCompReorder(data, metric="euclidean")
 visCompReorder(sMap, sReorder,title.rotate=15)
 \end{verbatim}
+\endgroup
 
 %-------------------------------
 \subsection{Arabidopsis embryo dataset from Xiang et al}\label{subsec:plant}
@@ -523,6 +537,8 @@ This dataset\footnote{\url{http://www.ncbi.nlm.nih.gov/pubmed/21402797}} contain
 
 \myincfig{supraHex_vignettes-plant}{1.2\textwidth}{Reordered components of map during embryo development in Arabidopsis}{Geometric locations of sample-specific transcriptome map characterise the relationships between the seven developmental stages: zygote, quadrant, globular, heart, torpedo, bent and mature.}
 
+\begingroup
+\fontsize{8pt}{10pt}\selectfont
 \begin{verbatim}
 # import data
 data(Xiang)
@@ -545,6 +561,7 @@ sWriteData(sMap, data, sBase, filename="Output_base_Xiang.txt")
 sReorder <- sCompReorder(sMap, metric="pearson")
 visCompReorder(sMap,sReorder,title.rotate=10,colormap="darkblue-white-darkorange")
 \end{verbatim}
+\endgroup
 
 %------------------------------------------------------------
 \section{Session Information}
