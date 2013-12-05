@@ -87,7 +87,7 @@ raiselinks,plainpages,pdftex]{hyperref}
 \subsection{What is \Rpackage{supraHex}?}\label{subsec:what}
 %-------------------------------
 
-The \Rpackage{supraHex} is a supra-hexagonal map. It consists of smaller hexagonal lattices on a regular 2-dimensional (2D) grid; these smaller hexagons collectively form a giant hexagon (see Figure~\ref{supraHex_vignettes-suprahex}). To be sure that a supra-hexagon is forme dexactly, inherent relationships must be met between the total number $nHex$ of hexagons in the grid, the grid radius $r$, and the xy-dimensions $xdim$ and $ydim$: 
+The \Rpackage{supraHex} package \citep{fang:2013} devises a supra-hexagonal map. This map consists of smaller hexagonal lattices on a regular 2-dimensional (2D) grid; these smaller hexagons collectively form a giant hexagon (see Figure~\ref{supraHex_vignettes-suprahex}). As seen, it has symmetric beauty around the center, from which individual hexagons radiate outwards. To ensure that a supra-hexagon is forme dexactly, inherent relationships must be met between the total number $nHex$ of hexagons in the grid, the grid radius $r$, and the xy-dimensions $xdim$ and $ydim$: 
 
 \begin{itemize} \itemsep1pt \parskip0pt \parsep0pt
 \item $nHex=1+6*r*(r-1)/2$;
@@ -137,9 +137,9 @@ Using the development version\footnote{\url{http://bioconductor.org/packages/dev
 source("http://bioconductor.org/biocLite.R")
 biocLite("BiocInstaller")
 library(BiocInstaller)
-useDevel(devel=T)
+useDevel(devel=T) # enable installation of the development version
 biocLite("supraHex")
-useDevel(devel=F)
+useDevel(devel=F) # back to installation settings for the release version
 library(supraHex) # load the package
 @
 
@@ -573,5 +573,7 @@ All of the output in this vignette was produced under the following conditions:
 sessionInfo()
 @
 
+\bibliographystyle{plainnat}
+\bibliography{supraHex_vignettes}
 
 \end{document}

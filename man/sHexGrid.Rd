@@ -69,7 +69,11 @@ res <- sHexGrid()
   Hai Fang \email{hfang@cs.bris.ac.uk}
 }
 \references{
-  \url{http://supfam.org/SUPERFAMILY/dcGO/supraHex.html}
+  Hai Fang and Julian Gough. (2013). supraHex: an
+  R/Bioconductor package for tabular omics data analysis
+  using a supra-hexagonal map. \emph{Biochemical and
+  Biophysical Research Communications},
+  \url{http://dx.doi.org/10.1016/j.bbrc.2013.11.103}.
 }
 \seealso{
   \code{\link{sTopology}}
