@@ -16,11 +16,9 @@
 * Partitioning of the map into gene meta-clusters
 * Sample correlation on 2D sample landscape
 * Overlaying additional data onto the trained map for exploring relationships between input and additional data
+* Support for heatmap and tree building and visualisations
 * This package can run on `Windows`, `Mac` and `Linux`
 
-## See also
+## Workflow
 
-* R-Forge: [project home page](http://suprahex.r-forge.r-project.org)
-* Bioconductor: [stable release version](http://bioconductor.org/packages/release/bioc/html/supraHex.html) and [latest development version](http://bioconductor.org/packages/devel/bioc/html/supraHex.html)
-* Old webpage: [http://supfam.org/SUPERFAMILY/dcGO/supraHex.html](http://supfam.org/SUPERFAMILY/dcGO/supraHex.html)
-
+<a href="supraHex_workflow.png"><IMG src="supraHex_workflow.png" height="275px" id="logo"></a>
