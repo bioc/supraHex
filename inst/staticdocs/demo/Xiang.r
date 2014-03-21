@@ -70,4 +70,3 @@ visHeatmapAdv((D), Rowv=F, Colv=F, dendrogram="none", KeyValueName="Log2(Ratio)"
 # add legend
 legend_txt <- paste(rep("Base",length(lvs)), lvs, sep=" ")
 legend("bottomleft", legend=legend_txt, col=lvs_color, lty=1, lwd=5, cex=0.6, box.col="transparent", horiz=F)
-
