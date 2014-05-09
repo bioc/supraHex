@@ -1,16 +1,16 @@
 \name{visHexMapping}
 \alias{visHexMapping}
-\title{Function to visualise various mapping items within a
-supra-hexagonal grid}
+\title{Function to visualise various mapping items within a supra-hexagonal grid}
 \usage{
-visHexMapping(sObj,
-mappingType = c("indexes", "hits", "dist", "antidist", "bases",
-"customized"),
-labels = NULL, height = 7, margin = rep(0.1, 4),
-area.size = 1,
-gp = grid::gpar(cex = 0.7, font = 1, col.label = "black"),
-border.color = "black", fill.color = "transparent",
-clip = c("on", "inherit", "off"), newpage = T)
+visHexMapping(sObj, mappingType = c("indexes", "hits", "dist",
+"antidist",
+"bases", "customized"), labels = NULL, height = 7, margin = rep(0.1,
+4),
+area.size = 1, gp = grid::gpar(cex = 0.7, font = 1, col = "black"),
+border.color = "black", fill.color = "transparent", lty = 1, lwd = 1,
+lineend = "round", linejoin = "round", clip = c("on", "inherit",
+"off"),
+newpage = T)
 }
 \arguments{
 \item{sObj}{an object of class "sMap" or "sInit" or
@@ -37,6 +37,18 @@ graphical parameter settings)}
 
 \item{fill.color}{the filled color for each hexagon}
 
+\item{lty}{the line type for each hexagon. 0 for 'blank',
+1 for 'solid', 2 for 'dashed', 3 for 'dotted', 4 for
+'dotdash', 5 for 'longdash', 6 for 'twodash'}
+
+\item{lwd}{the line width for each hexagon}
+
+\item{lineend}{the line end style for each hexagon. It
+can be one of 'round', 'butt' and 'square'}
+
+\item{linejoin}{the line join style for each hexagon. It
+can be one of 'round', 'mitre' and 'bevel'}
+
 \item{clip}{either "on" for clipping to the extent of
 this viewport, "inherit" for inheriting the clipping
 region from the parent viewport, or "off" to turn
@@ -54,13 +66,13 @@ mapping items within a supra-hexagonal grid
 }
 \note{
 The mappingType includes: \itemize{ \item{"indexes": the
-index of hexagons in a supra-hexagonal grid}
-\item{"hits": the number of input data vectors hitting
-the hexagons} \item{"dist": distance (in high-dimensional
-input space) to neighbors (defined in 2D output space)}
-\item{"antidist": the oppose version of "dist"}
-\item{"bases": clusters partitioned from the sMap}
-\item{"customized": displaying input "labels"} }
+index of hexagons in a supra-hexagonal grid} \item{"hits":
+the number of input data vectors hitting the hexagons}
+\item{"dist": distance (in high-dimensional input space) to
+neighbors (defined in 2D output space)} \item{"antidist":
+the oppose version of "dist"} \item{"bases": clusters
+partitioned from the sMap} \item{"customized": displaying
+input "labels"} }
 }
 \examples{
 # 1) generate data with an iid matrix of 1000 x 9
@@ -79,9 +91,7 @@ visHexMapping(sMap,mappingType="indexes")
 visHexMapping(sMap,mappingType="hits")
 # 3c) for distance (in high-dimensional input space) to neighbors (defined in 2D output space)
 visHexMapping(sMap,mappingType="dist")
-# 3d) for anti-distance (in high-dimensional input space) to neighbors (defined in 2D output space)
-visHexMapping(sMap,mappingType="antidist")
-# 3e) for clusters/bases partitioned from the sMap
+# 3d) for clusters/bases partitioned from the sMap
 visHexMapping(sMap,mappingType="bases")
 }
 \seealso{

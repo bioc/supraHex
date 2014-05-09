@@ -2,14 +2,12 @@
 \alias{sCompReorder}
 \title{Function to reorder component planes}
 \usage{
-sCompReorder(sMap, xdim = NULL, ydim = NULL,
-amplifier = NULL,
+sCompReorder(sMap, xdim = NULL, ydim = NULL, amplifier = NULL,
 metric = c("none", "pearson", "spearman", "kendall", "euclidean",
-"manhattan", "cos", "mi"),
-init = c("linear", "uniform", "sample"),
-algorithm = c("sequential", "batch"),
-alphaType = c("invert", "linear", "power"),
-neighKernel = c("gaussian", "bubble", "cutgaussian", "ep", "gamma"))
+"manhattan", "cos", "mi"), init = c("linear", "uniform", "sample"),
+algorithm = c("sequential", "batch"), alphaType = c("invert", "linear",
+"power"), neighKernel = c("gaussian", "bubble", "cutgaussian", "ep",
+"gamma"))
 }
 \arguments{
 \item{sMap}{an object of class "sMap" or input data
@@ -56,37 +54,35 @@ be one of "gaussian", "bubble", "cutgaussian", "ep" and
 \value{
 an object of class "sReorder", a list with following
 components: \itemize{ \item{\code{nHex}: the total number
-of rectanges in the grid} \item{\code{xdim}: x-dimension
-of the grid} \item{\code{ydim}: y-dimension of the grid}
+of rectanges in the grid} \item{\code{xdim}: x-dimension of
+the grid} \item{\code{ydim}: y-dimension of the grid}
 \item{\code{uOrder}: the unique order/placement for each
-component plane that is reordered to the "sheet"-shape
-grid with rectangular lattice} \item{\code{coord}: a
-matrix of nHex x 2, with each row corresponding to the
-coordinates of each "uOrder" rectangle in the 2D map
-grid} \item{\code{call}: the call that produced this
-result} }
+component plane that is reordered to the "sheet"-shape grid
+with rectangular lattice} \item{\code{coord}: a matrix of
+nHex x 2, with each row corresponding to the coordinates of
+each "uOrder" rectangle in the 2D map grid}
+\item{\code{call}: the call that produced this result} }
 }
 \description{
-\code{sCompReorder} is supposed to reorder component
-planes for the input map/data. It returns an object of
-class "sReorder". It is realized by using a new map grid
-(with sheet shape consisting of a rectangular lattice) to
-train component plane vectors (either column-wise vectors
-of codebook/data matrix or the covariance matrix
-thereof). As a result, similar component planes are
-placed closer to each other. It is highly recommend to
-use trained map (i.e. codebook matrix) as input if data
-matrix is hugely big to save computational costs.
+\code{sCompReorder} is supposed to reorder component planes
+for the input map/data. It returns an object of class
+"sReorder". It is realized by using a new map grid (with
+sheet shape consisting of a rectangular lattice) to train
+component plane vectors (either column-wise vectors of
+codebook/data matrix or the covariance matrix thereof). As
+a result, similar component planes are placed closer to
+each other. It is highly recommend to use trained map (i.e.
+codebook matrix) as input if data matrix is hugely big to
+save computational costs.
 }
 \note{
-To ensure the unique placement, each component plane
-mapped to the "sheet"-shape grid with rectangular lattice
-is determinied iteratively in an order from the best
-matched to the next compromised one. If multiple
-compoments are hit in the same rectangular lattice, the
-worse one is always sacrificed by moving to the next best
-one till all components are placed somewhere exclusively
-on their own.
+To ensure the unique placement, each component plane mapped
+to the "sheet"-shape grid with rectangular lattice is
+determinied iteratively in an order from the best matched
+to the next compromised one. If multiple compoments are hit
+in the same rectangular lattice, the worse one is always
+sacrificed by moving to the next best one till all
+components are placed somewhere exclusively on their own.
 }
 \examples{
 # 1) generate an iid normal random matrix of 100x10
@@ -101,17 +97,8 @@ sMap <- sPipeline(data=data)
 sReorder <- sCompReorder(sMap=sMap, amplifier=2, metric="none")
 # 3b) according to covariance matrix of pearson correlation of codebook matrix
 sReorder <- sCompReorder(sMap=sMap, amplifier=2, metric="pearson")
-# 3c) directly using column-wise vectors of input matrix
-sReorder <- sCompReorder(sMap=data, amplifier=2, metric="none")
-# 3d) according to covariance matrix of pearson correlation of input matrix
+# 3c) according to covariance matrix of pearson correlation of input matrix
 sReorder <- sCompReorder(sMap=data, amplifier=2, metric="pearson")
-
-# 4) visualise multiple component planes reorded within a sheet-shape rectangle grid
-visCompReorder(sMap=sMap, sReorder=sReorder, margin=rep(0.1,4),
-height=7,
-title.rotate=0, title.xy=c(0.45, 1), colormap="gbr", ncolors=10,
-zlim=c(-1,1),
-border.color="transparent")
 }
 \seealso{
 \code{\link{sTopology}}, \code{\link{sPipeline}},
