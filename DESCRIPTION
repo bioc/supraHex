@@ -1,8 +1,8 @@
 Package: supraHex
 Type: Package
 Title: A Supra-Hexagonal Map for Analysing Tabular Omics Data
-Version: 1.11.1
-Date: 2015-9-24
+Version: 1.10.1
+Date: 2016-6-24
 Author: Hai Fang and Julian Gough
 Maintainer: Hai Fang <hfang@well.ox.ac.uk>
 Depends:
@@ -52,12 +52,14 @@ Collate:
     'visHeatmap.r'
     'visHeatmapAdv.r'
     'visHexAnimate.r'
+    'visHexBarplot.r'
     'visHexComp.r'
     'visHexGrid.r'
     'visHexMapping.r'
     'visHexMulComp.r'
     'visHexPattern.r'
     'visKernels.r'
+    'visTreeBSclust.r'
     'visTreeBootstrap.r'
     'visVp.r'
 License: GPL-2
