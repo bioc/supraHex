@@ -6,7 +6,7 @@
 \usage{
 visColormap(colormap = c("bwr", "jet", "gbr", "wyr", "br", "yr",
 "rainbow",
-"wb"))
+"wb", "ggplot2"))
 }
 \arguments{
 \item{colormap}{short name for the colormap}

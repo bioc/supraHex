@@ -47,7 +47,7 @@ unassigned tip nodes will be the cluster called 'C0'}
 }
 }
 \description{
-\code{visTreeBSclust} is supposed to otbain clusters from a
+\code{visTreeBSclust} is supposed to obtain clusters from a
 bootstrapped tree.
 }
 \note{
