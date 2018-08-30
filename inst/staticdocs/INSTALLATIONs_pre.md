@@ -36,8 +36,9 @@ Notes: below are R command lines (NOT shell command lines).
 
 To install [stable release version](http://bioconductor.org/packages/release/bioc/html/supraHex.html), run:
 
-    source("http://bioconductor.org/biocLite.R")
-    biocLite("supraHex")
+    if (!requireNamespace("BiocManager", quietly=TRUE))
+        install.packages("BiocManager")
+    BiocManager::install("supraHex")
 
 To install [latest development version](http://bioconductor.org/packages/devel/bioc/html/supraHex.html) (`highly recommended` for benefits of latest improvements), run:
 
@@ -47,10 +48,11 @@ To install [latest development version](http://bioconductor.org/packages/devel/b
 
 To install [latest development version](http://bioconductor.org/packages/devel/bioc/html/supraHex.html) (`highly recommended` for benefits of latest improvements), run:
 
-    library(BiocInstaller) 
+    library(BiocManager) 
     useDevel(devel=T)
-    source("http://bioconductor.org/biocLite.R")
-    biocLite("supraHex")
+    if (!requireNamespace("BiocManager", quietly=TRUE))
+        install.packages("BiocManager")
+    BiocManager::install("supraHex")
     # After intallation, it is very important to reset back to the release version of Bioconductor
     # Otherwise, packages to be installed will come from the development version (might be instable)
     useDevel(devel=F)

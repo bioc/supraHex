@@ -12,8 +12,9 @@ library(supraHex)
 # Load or install packages (i.e. edgeR) specifically used in this demo
 for(pkg in c("edgeR")){
     if(!require(pkg, character.only=T)){
-        source("http://bioconductor.org/biocLite.R")
-        biocLite(pkg)
+        if (!requireNamespace("BiocManager", quietly=TRUE))
+            install.packages("BiocManager")
+        BiocManager::install(pkg)
         lapply(pkg, library, character.only=T)
     }
 }
