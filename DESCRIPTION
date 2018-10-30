@@ -1,7 +1,7 @@
 Package: supraHex
 Type: Package
 Title: supraHex: a supra-hexagonal map for analysing tabular omics data
-Version: 1.19.1
+Version: 1.20.0
 Date: 2018-4-11
 Author: Hai Fang and Julian Gough
 Maintainer: Hai Fang <hfang@well.ox.ac.uk>
