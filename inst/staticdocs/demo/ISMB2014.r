@@ -12,9 +12,8 @@ library(supraHex)
 # Load and/or install packages used in this demo
 for(pkg in c("Biobase","limma")){
     if(!require(pkg, character.only=T)){
-        if (!requireNamespace("BiocManager", quietly=TRUE))
-            install.packages("BiocManager")
-        BiocManager::install(pkg)
+        source("http://bioconductor.org/biocLite.R")
+        biocLite(pkg)
         lapply(pkg, library, character.only=T)
     }
 }

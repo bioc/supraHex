@@ -36,9 +36,8 @@ Notes: below are R command lines (NOT shell command lines).
 
 To install [stable release version](http://bioconductor.org/packages/release/bioc/html/supraHex.html), run:
 
-    if (!requireNamespace("BiocManager", quietly=TRUE))
-        install.packages("BiocManager")
-    BiocManager::install(c("supraHex","devtools"))
+    source("http://bioconductor.org/biocLite.R")
+    biocLite(c("supraHex","devtools"))
 
 To install [latest development version](https://github.com/hfang-bristol/supraHex) (`highly recommended` for benefits of latest improvements), run:
     
