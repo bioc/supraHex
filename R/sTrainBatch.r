@@ -66,7 +66,7 @@ sTrainBatch <- function(sMap, data, sTrain, verbose=TRUE)
 {
 
     if (class(sMap) != "sMap" & class(sMap) != "sInit"){
-        stop("The funciton must apply to either 'sMap' or 'sInit' object.\n")
+        stop("The function must apply to either 'sMap' or 'sInit' object.\n")
     }
     xdim <- sMap$xdim
     ydim <- sMap$ydim

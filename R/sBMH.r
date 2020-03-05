@@ -71,11 +71,11 @@ sBMH <- function(sMap, data, which_bmh=c("best", "worst", "all"))
     }
     
     if(length(which_bmh) == 1){
-        if(which_bmh == "best"){
+        if(all(which_bmh == "best")){
             which_bmh <- 1
-        }else if(which_bmh == "worst"){
+        }else if(all(which_bmh == "worst")){
             which_bmh <- nHex
-        }else if(which_bmh == "all"){
+        }else if(all(which_bmh == "all")){
             which_bmh <- seq(1, nHex)
         }else{
             which_bmh <- 1
