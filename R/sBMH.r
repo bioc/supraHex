@@ -46,7 +46,7 @@
 sBMH <- function(sMap, data, which_bmh=c("best", "worst", "all"))
 {
     
-    if (class(sMap) == "sMap" ){
+    if (is(sMap,"sMap")){
         M <- sMap$codebook
     }else{
         M <- sMap
