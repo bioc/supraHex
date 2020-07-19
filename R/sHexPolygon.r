@@ -22,8 +22,8 @@ sHexPolygon <- function (sObj, area.size=1)
     }
     
     dat <- data.frame(sObj$coord)
-    xdim <- sObj$xdim
-    ydim <- sObj$ydim
+    #xdim <- sObj$xdim
+    #ydim <- sObj$ydim
     nHex <- sObj$nHex
     xnew <- dat$x
     ynew <- dat$y

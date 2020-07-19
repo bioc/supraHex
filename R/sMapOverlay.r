@@ -146,6 +146,6 @@ sMapOverlay <- function(sMap, data, additional)
     
     class(sOverlay) <- "sMap"
     
-    invisible(sOverlay)
+    sOverlay
     
 }

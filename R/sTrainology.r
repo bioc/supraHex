@@ -216,5 +216,5 @@ sTrainology <- function(sMap, data, algorithm=c("batch","sequential"), stage=c("
     
     class(sTrain) <- "sTrain"
     
-    invisible(sTrain)
+    sTrain
 }

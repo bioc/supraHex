@@ -171,6 +171,9 @@ sTopology <- function (data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("he
             coord[, 1L] <- coord[, 1L] + 0.5 * (coord[, 2L] %% 2)
             coord[, 2L] <- sqrt(0.75) * coord[, 2L]        
         }
+        
+        a <- as.data.frame(coord)
+        coord <- as.matrix(a[with(a,order(y,x)),])
     
     }else{
         
@@ -248,6 +251,6 @@ sTopology <- function (data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("he
     
     class(sTopol) <- "sTopol"
     
-    invisible(sTopol)
+    sTopol
 
 }

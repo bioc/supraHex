@@ -139,6 +139,6 @@ sCompReorder <- function(sMap, xdim=NULL, ydim=NULL, amplifier=NULL, metric=c("n
     
     class(sReorder) <- "sReorder"
     
-    invisible(sReorder)
+    sReorder
     
 }

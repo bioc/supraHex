@@ -205,5 +205,5 @@ sDmatCluster <- function(sMap, which_neigh=1, distMeasure=c("median","mean","min
                 
     class(sBase) <- "sBase"
     
-    invisible(sBase)
+    sBase
 }

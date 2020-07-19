@@ -226,5 +226,5 @@ sTrainSeq <- function(sMap, data, sTrain, verbose=TRUE)
     
     class(sMap) <- "sMap"
     
-    invisible(sMap)
+    sMap
 }
