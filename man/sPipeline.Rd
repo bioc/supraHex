@@ -13,7 +13,7 @@ lattice = c("hexa", "rect"),
 shape = c("suprahex", "sheet", "triangle", "diamond", "hourglass",
 "trefoil",
 "ladder", "butterfly", "ring", "bridge"),
-scale = 5,
+scaling = 5,
 init = c("linear", "uniform", "sample"),
 algorithm = c("batch", "sequential"),
 alphaType = c("invert", "linear", "power"),
@@ -43,7 +43,7 @@ hourglass-shaped variant, "trefoil" for the trefoil-shaped variant,
 butterfly-shaped variant, "ring" for the ring-shaped variant, and
 "bridge" for the bridge-shaped variant)}
 
-\item{scale}{the scaling factor. Only used when automatically
+\item{scaling}{the scaling factor. Only used when automatically
 estimating the grid dimension from input data matrix. By default, it is
 5 (big map). Other suggested values: 1 for small map, and 3 for median
 map}
@@ -85,8 +85,9 @@ an object of class "sMap", a list with following components:
 \item{\code{shape}: the grid shape}
 \item{\code{coord}: a matrix of nHex x 2, with rows corresponding to
 the coordinates of all hexagons/rectangles in the 2D map grid}
-\item{\code{polygon}: a data frame of three columns ('x','y','id')
-storing polygon location per hexagon in the 2D map grid}
+\item{\code{polygon}: a tibble of 7 columns
+('x','y','index','node','edge','stepCentroid','angleCentroid') storing
+polygon location per hexagon}
 \item{\code{init}: an initialisation method}
 \item{\code{neighKernel}: the training neighborhood kernel}
 \item{\code{codebook}: a codebook matrix of nHex x ncol(data), with
@@ -118,6 +119,35 @@ error does get worse;}
 \item{iv) \code{\link{sBMH}} used to identify the best-matching
 hexagons/rectangles (BMH) for the input data, and these response data
 are appended to the resulting object of "sMap" class.}
+}
+}
+\examples{
+# 1) generate an iid normal random matrix of 100x10 
+data <- matrix( rnorm(100*10,mean=0,sd=1), nrow=100, ncol=10)
+colnames(data) <- paste(rep('S',10), seq(1:10), sep="")
+
+\dontrun{
+# 2) get trained using by default setup but with different neighborhood kernels
+# 2a) with "gaussian" kernel
+sMap <- sPipeline(data=data, neighKernel="gaussian")
+# 2b) with "bubble" kernel
+# sMap <- sPipeline(data=data, neighKernel="bubble")
+# 2c) with "cutgaussian" kernel
+# sMap <- sPipeline(data=data, neighKernel="cutgaussian")
+# 2d) with "ep" kernel
+# sMap <- sPipeline(data=data, neighKernel="ep")
+# 2e) with "gamma" kernel
+# sMap <- sPipeline(data=data, neighKernel="gamma")
+
+# 3) visualise multiple component planes of a supra-hexagonal grid
+visHexMulComp(sMap, colormap="jet", ncolors=20, zlim=c(-1,1),
+gp=grid::gpar(cex=0.8))
+
+# 4) get trained using by default setup but using the shape "butterfly"
+sMap <- sPipeline(data=data, shape="trefoil",
+algorithm=c("batch","sequential")[2])
+visHexMulComp(sMap, colormap="jet", ncolors=20, zlim=c(-1,1),
+gp=grid::gpar(cex=0.8))
 }
 }
 \references{

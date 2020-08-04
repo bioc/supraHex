@@ -104,7 +104,7 @@ sTrainBatch <- function(sMap, data, sTrain, verbose=TRUE)
         radius <- radiusFinal + ((tlen-1):0)/((tlen-1)) * (radiusInitial - radiusFinal)
     }
 
-    radius <- radius^2;
+    radius <- radius^2
     ## avoid div-by-zero error
     eps <- 1e-16
     radius[radius==0] <- eps

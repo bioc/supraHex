@@ -8,7 +8,7 @@
 #' @param nHex the number of hexagons/rectangles in the grid
 #' @param lattice the grid lattice, either "hexa" for a hexagon or "rect" for a rectangle
 #' @param shape the grid shape, either "suprahex" for a supra-hexagonal grid or "sheet" for a hexagonal/rectangle sheet. Also supported are suprahex's variants (including "triangle" for the triangle-shaped variant, "diamond" for the diamond-shaped variant, "hourglass" for the hourglass-shaped variant, "trefoil" for the trefoil-shaped variant, "ladder" for the ladder-shaped variant, "butterfly" for the butterfly-shaped variant, "ring" for the ring-shaped variant, and "bridge" for the bridge-shaped variant)
-#' @param scale the scaling factor. Only used when automatically estimating the grid dimension from input data matrix. By default, it is 5 (big map). Other suggested values: 1 for small map, and 3 for median map 
+#' @param scaling the scaling factor. Only used when automatically estimating the grid dimension from input data matrix. By default, it is 5 (big map). Other suggested values: 1 for small map, and 3 for median map 
 #' @return 
 #' an object of class "sTopol", a list with following components:
 #' \itemize{
@@ -25,7 +25,7 @@
 #' \itemize{
 #' \item{How the input parameters are used to determine nHex is taken priority in the following order: "xdim & ydim" > "nHex" > "data"}
 #' \item{If both of xdim and ydim are given, \eqn{nHex=xdim*ydim} for the "sheet" shape, \eqn{r=(min(xdim,ydim)+1)/2} for the "suprahex" shape}
-#' \item{If only data is input, \eqn{nHex=scale*sqrt(dlen)}, where dlen is the number of rows of the input data, and scale can be 5 (big map), 3 (median map) and 1 (normal map)}
+#' \item{If only data is input, \eqn{nHex=scaling*sqrt(dlen)}, where dlen is the number of rows of the input data, and scaling can be 5 (big map), 3 (median map) and 1 (normal map)}
 #' \item{With nHex in hand, it depends on the grid shape:}
 #' \itemize{
 #' \item{For "sheet" shape, xy-dimensions of sheet grid is determined according to the square root of the two biggest eigenvalues of the input data}
@@ -73,7 +73,7 @@
 #' gp <- ggplot(data=df_polygon, aes(x,y,group=index)) + geom_polygon(aes(fill=factor(stepCentroid%%2))) + coord_fixed(ratio=1) + theme_void() + theme(legend.position="none") + geom_text(data=df_coord, aes(x,y,label=index), color="white")
 #' }
 
-sTopology <- function (data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("hexa","rect"), shape=c("suprahex", "sheet", "triangle", "diamond", "hourglass", "trefoil", "ladder", "butterfly", "ring", "bridge"), scale=5)
+sTopology <- function (data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("hexa","rect"), shape=c("suprahex", "sheet", "triangle", "diamond", "hourglass", "trefoil", "ladder", "butterfly", "ring", "bridge"), scaling=5)
 {
     lattice <- match.arg(lattice)
     shape <- match.arg(shape)
@@ -94,9 +94,9 @@ sTopology <- function (data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("he
         if(!is.null(data) & is.null(nHex)){
             if(ncol(data) >= 2){
                 ## A heuristic formula of "nHex = 5*sqrt(dlen)" is used to calculate the number of hexagons/rectangles, where dlen is the number of rows in the given data
-                ## scale <- 5
+                ## scaling <- 5
                 dlen <- nrow(data)
-                nHex <- ceiling(scale*sqrt(dlen))          
+                nHex <- ceiling(scaling*sqrt(dlen))          
             }
         }
         
@@ -112,7 +112,7 @@ sTopology <- function (data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("he
                 ## initialize xdim/ydim ratio using principal components of the input space; the ratio is the square root of ratio of two largest eigenvalues
                 
                 ## calculate two largest eigenvalues and their corresponding eigenvectors
-                data.center <- scale(data, center=TRUE, scale=FALSE)
+                data.center <- base::scale(data, center=TRUE, scale=FALSE)
                 s <- svd(data.center)
                 # d: a vector containing the singular values, i.e., the square roots of the non-zero eigenvalues of data %*% t(data)
                 # u: a matrix whose columns contain the left singular vectors, i.e., eigenvectors of data %*% t(data)

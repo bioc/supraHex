@@ -5,6 +5,7 @@
 #' @param sMap an object of class "sMap"
 #' @param which_neigh which neighbors in 2D output space are used for the calculation. By default, it sets to "1" for direct neighbors, and "2" for neighbors within neighbors no more than 2, and so on
 #' @param distMeasure distance measure used to calculate distances in high-dimensional input space. It can be one of "median", "mean", "min" and "max" measures
+#' @param constraint logic whether further constraint applied. If TRUE, only consider those hexagons 1) with 2 or more neighbors; and 2) neighbors are not within minima already found (due to the same distance)
 #' @param clusterLinkage cluster linkage used to derive clusters. It can be "bmh", which accumulates a cluster just based on best-matching hexagons/rectanges but can not ensure each cluster is continuous. Instead, each cluster is continuous when using region-growing algorithm with one of "average", "complete" and "single" linkages
 #' @param reindexSeed the way to index seed. It can be "hclust" for reindexing seeds according to hierarchical clustering of patterns seen in seeds, "svd" for reindexing seeds according to svd of patterns seen in seeds, or "none" for seeds being simply increased by the hexagon indexes (i.e. always in an increasing order as hexagons radiate outwards)
 #' 
@@ -35,7 +36,7 @@
 #' # 4) visualise clusters/bases partitioned from the sMap
 #' visDmatCluster(sMap,sBase)
 
-sDmatCluster <- function(sMap, which_neigh=1, distMeasure=c("median","mean","min","max"), clusterLinkage=c("average","complete","single","bmh"), reindexSeed=c("hclust","svd","none"))
+sDmatCluster <- function(sMap, which_neigh=1, distMeasure=c("median","mean","min","max"), constraint=TRUE, clusterLinkage=c("average","complete","single","bmh"), reindexSeed=c("hclust","svd","none"))
 {
     
     distMeasure <- match.arg(distMeasure)
@@ -48,7 +49,7 @@ sDmatCluster <- function(sMap, which_neigh=1, distMeasure=c("median","mean","min
     nHex <- sMap$nHex
     
     ## Find base seed based on local minima of distance matrix
-    seed <- sDmatMinima(sMap=sMap, which_neigh=which_neigh, distMeasure=distMeasure)
+    seed <- sDmatMinima(sMap=sMap, which_neigh=which_neigh, distMeasure=distMeasure, constraint=constraint)
     
     ## Partition the given data by flooding
     base <- matrix(0, nrow=nHex, ncol=1)
@@ -194,6 +195,9 @@ sDmatCluster <- function(sMap, which_neigh=1, distMeasure=c("median","mean","min
         old_index <- (1:length(seed))
         new_index <- old_index[ordering]
         base <- sapply(base, function(x) which(new_index==x))
+    
+    }else{
+		base <-  as.vector(base)    
     }
     
     ###########################################################

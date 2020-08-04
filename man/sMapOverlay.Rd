@@ -26,6 +26,9 @@ an object of class "sMap", a list with following components:
 \item{\code{shape}: the grid shape}
 \item{\code{coord}: a matrix of nHex x 2, with rows corresponding to
 the coordinates of all hexagons/rectangles in the 2D map grid}
+\item{\code{polygon}: a tibble of 7 columns
+('x','y','index','node','edge','stepCentroid','angleCentroid') storing
+polygon location per hexagon}
 \item{\code{init}: an initialisation method}
 \item{\code{neighKernel}: the training neighborhood kernel}
 \item{\code{codebook}: a codebook matrix of nHex x ncol(additional),

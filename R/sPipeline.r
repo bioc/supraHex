@@ -8,7 +8,7 @@
 #' @param nHex the number of hexagons/rectangles in the grid
 #' @param lattice the grid lattice, either "hexa" for a hexagon or "rect" for a rectangle
 #' @param shape the grid shape, either "suprahex" for a supra-hexagonal grid or "sheet" for a hexagonal/rectangle sheet. Also supported are suprahex's variants (including "triangle" for the triangle-shaped variant, "diamond" for the diamond-shaped variant, "hourglass" for the hourglass-shaped variant, "trefoil" for the trefoil-shaped variant, "ladder" for the ladder-shaped variant, "butterfly" for the butterfly-shaped variant, "ring" for the ring-shaped variant, and "bridge" for the bridge-shaped variant)
-#' @param scale the scaling factor. Only used when automatically estimating the grid dimension from input data matrix. By default, it is 5 (big map). Other suggested values: 1 for small map, and 3 for median map 
+#' @param scaling the scaling factor. Only used when automatically estimating the grid dimension from input data matrix. By default, it is 5 (big map). Other suggested values: 1 for small map, and 3 for median map 
 #' @param init an initialisation method. It can be one of "uniform", "sample" and "linear" initialisation methods
 #' @param algorithm the training algorithm. It can be one of "sequential" and "batch" algorithm. By default, it uses 'batch' algorithm purely because of its fast computations (probably also without the compromise of accuracy). However, it is highly recommended not to use 'batch' algorithm if the input data contain lots of zeros; it is because matrix multiplication used in the 'batch' algorithm can be problematic in this context. If much computation resource is at hand, it is alwasy safe to use the 'sequential' algorithm  
 #' @param alphaType the alpha type. It can be one of "invert", "linear" and "power" alpha types
@@ -25,7 +25,7 @@
 #'  \item{\code{lattice}: the grid lattice}
 #'  \item{\code{shape}: the grid shape}
 #'  \item{\code{coord}: a matrix of nHex x 2, with rows corresponding to the coordinates of all hexagons/rectangles in the 2D map grid}
-#'  \item{\code{polygon}: a data frame of three columns ('x','y','id') storing polygon location per hexagon in the 2D map grid}
+#'  \item{\code{polygon}: a tibble of 7 columns ('x','y','index','node','edge','stepCentroid','angleCentroid') storing polygon location per hexagon}
 #'  \item{\code{init}: an initialisation method}
 #'  \item{\code{neighKernel}: the training neighborhood kernel}
 #'  \item{\code{codebook}: a codebook matrix of nHex x ncol(data), with rows corresponding to prototype vectors in input high-dimensional space}
@@ -42,12 +42,18 @@
 #' }
 #' @export
 #' @import hexbin
-#' @import MASS
+#' @importFrom MASS eqscplot
 #' @importFrom ape nj fastme.ols fastme.bal boot.phylo consensus is.rooted unroot root mrca write.tree read.tree plot.phylo nodelabels
 #' @importFrom grDevices col2rgb colorRampPalette dev.new hsv rainbow rgb2hsv
 #' @importFrom graphics abline axis box hist image layout legend lines mtext par plot.new points rect stars strheight strwidth symbols text title
 #' @importFrom stats as.dendrogram as.dist cor cutree density dist hclust heatmap median order.dendrogram quantile reorder runif sd
-#' @importFrom utils write.table
+#' @importFrom readr write_delim
+#' @importFrom tibble tibble as_tibble
+#' @importFrom tidyr nest separate_rows unnest
+#' @importFrom dplyr mutate pull select transmute bind_cols
+#' @importFrom stringr str_c
+#' @importFrom purrr map
+#' @importFrom magrittr %>%
 #' @importFrom methods is
 #' @seealso \code{\link{sTopology}}, \code{\link{sInitial}}, \code{\link{sTrainology}}, \code{\link{sTrainSeq}}, \code{\link{sTrainBatch}}, \code{\link{sBMH}}, \code{\link{visHexMulComp}}
 #' @include sPipeline.r
@@ -58,6 +64,7 @@
 #' data <- matrix( rnorm(100*10,mean=0,sd=1), nrow=100, ncol=10) 
 #' colnames(data) <- paste(rep('S',10), seq(1:10), sep="")
 #'
+#' \dontrun{
 #' # 2) get trained using by default setup but with different neighborhood kernels
 #' # 2a) with "gaussian" kernel
 #' sMap <- sPipeline(data=data, neighKernel="gaussian")
@@ -76,10 +83,9 @@
 #' # 4) get trained using by default setup but using the shape "butterfly"
 #' sMap <- sPipeline(data=data, shape="trefoil", algorithm=c("batch","sequential")[2])
 #' visHexMulComp(sMap, colormap="jet", ncolors=20, zlim=c(-1,1), gp=grid::gpar(cex=0.8))
-#' 
 #' }
 
-sPipeline <- function(data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("hexa","rect"), shape=c("suprahex", "sheet", "triangle", "diamond", "hourglass", "trefoil", "ladder", "butterfly", "ring", "bridge"), scale=5, init=c("linear","uniform","sample"), algorithm=c("batch","sequential"), alphaType=c("invert","linear","power"), neighKernel=c("gaussian","bubble","cutgaussian","ep","gamma"), finetuneSustain=FALSE, verbose=TRUE)
+sPipeline <- function(data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("hexa","rect"), shape=c("suprahex", "sheet", "triangle", "diamond", "hourglass", "trefoil", "ladder", "butterfly", "ring", "bridge"), scaling=5, init=c("linear","uniform","sample"), algorithm=c("batch","sequential"), alphaType=c("invert","linear","power"), neighKernel=c("gaussian","bubble","cutgaussian","ep","gamma"), finetuneSustain=FALSE, verbose=TRUE)
 {
 
     startT <- Sys.time()
@@ -100,7 +106,7 @@ sPipeline <- function(data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("hex
         now <- Sys.time()
         message(sprintf("First, define topology of a map grid (%s)...", as.character(now)), appendLF=TRUE)
     }
-    sTopol <- sTopology(data=data, xdim=xdim, ydim=ydim, nHex=nHex, lattice=lattice, shape=shape, scale=scale)
+    sTopol <- sTopology(data=data, xdim=xdim, ydim=ydim, nHex=nHex, lattice=lattice, shape=shape, scaling=scaling)
     
     ## initialise the codebook matrix given a topology and input data
     if (verbose){
