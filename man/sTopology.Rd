@@ -55,6 +55,7 @@ for the explaination}
 \item{\code{shape}: the grid shape}
 \item{\code{coord}: a matrix of nHex x 2, with each row corresponding
 to the coordinates of a hexagon/rectangle in the 2D map grid}
+\item{\code{ig}: the igraph object}
 \item{\code{call}: the call that produced this result}
 }
 }
@@ -128,6 +129,11 @@ gp <- ggplot(data=df_polygon, aes(x,y,group=index)) +
 geom_polygon(aes(fill=factor(stepCentroid\%\%2))) +
 coord_fixed(ratio=1) + theme_void() + theme(legend.position="none") +
 geom_text(data=df_coord, aes(x,y,label=index), color="white")
+
+library(ggraph)
+ggraph(sTopol$ig, layout=sTopol$coord) + geom_edge_link() +
+geom_node_circle(aes(r=0.4),fill='white') + coord_fixed(ratio=1) +
+geom_node_text(aes(label=name), size=2)
 }
 }
 \seealso{

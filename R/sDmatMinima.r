@@ -62,7 +62,6 @@ sDmatMinima <- function(sMap, which_neigh=1, distMeasure=c("median","mean","min"
 				next
 			}
 		}
-		
 
 		tmpSum <- sum(dMat[ne] >= dMat[i])
 		if(tmpSum == length(ne)){
