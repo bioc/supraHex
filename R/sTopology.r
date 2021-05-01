@@ -19,6 +19,7 @@
 #'  \item{\code{lattice}: the grid lattice}
 #'  \item{\code{shape}: the grid shape}
 #'  \item{\code{coord}: a matrix of nHex x 2, with each row corresponding to the coordinates of a hexagon/rectangle in the 2D map grid}
+#'  \item{\code{ig}: the igraph object}
 #'  \item{\code{call}: the call that produced this result}
 #' }
 #' @note The output of nHex depends on the input arguments and grid shape: 
@@ -71,6 +72,9 @@
 #' df_polygon <- sHexPolygon(sTopol)
 #' df_coord <- data.frame(sTopol$coord, index=1:nrow(sTopol$coord))
 #' gp <- ggplot(data=df_polygon, aes(x,y,group=index)) + geom_polygon(aes(fill=factor(stepCentroid%%2))) + coord_fixed(ratio=1) + theme_void() + theme(legend.position="none") + geom_text(data=df_coord, aes(x,y,label=index), color="white")
+#' 
+#' library(ggraph)
+#' ggraph(sTopol$ig, layout=sTopol$coord) + geom_edge_link() + geom_node_circle(aes(r=0.4),fill='white') + coord_fixed(ratio=1) + geom_node_text(aes(label=name), size=2)
 #' }
 
 sTopology <- function (data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("hexa","rect"), shape=c("suprahex", "sheet", "triangle", "diamond", "hourglass", "trefoil", "ladder", "butterfly", "ring", "bridge"), scaling=5)
@@ -239,6 +243,38 @@ sTopology <- function (data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("he
         
     }
 
+	###################################################
+	# ig
+	dist <- as.matrix(stats::dist(coord[,1:2]))
+	nHex <- nrow(coord)
+	dNeigh <- matrix(0, nrow=nHex, ncol=nHex)
+	rownames(dNeigh) <- colnames(dNeigh) <- str_c('u',seq(nrow(dNeigh)))
+	for(i in 1:nHex){
+		inds <- which(dist[i,] < 1.001 & dist[i,] > 0) ## allow for rounding error
+		dNeigh[i,inds] <- 1
+	}
+	
+	## convert to "igraph"
+	### adjacency matrix
+	adjM <- dNeigh
+	### nodes
+	nodes <- tibble::tibble(name=rownames(adjM), xcoord=coord[,1], ycoord=coord[,2]) %>% as.data.frame()
+	## d
+	nodenames <- rownames(adjM)
+	tmp <- which(as.matrix(adjM!=0), arr.ind=TRUE)
+	ind <- which(tmp[,1]<tmp[,2])
+	ttmp <- matrix(0, nrow=length(ind), ncol=2)
+	ttmp[1:length(ind),] <- tmp[ind,]
+	tmp <- ttmp
+	d <- data.frame(from=nodenames[tmp[,1]], to=nodenames[tmp[,2]])
+	## convert to ig
+	d$from <- stringr::str_replace_all(d$from, 'u', '')
+	d$to <- stringr::str_replace_all(d$to, 'u', '')
+	nodes$name <- stringr::str_replace_all(nodes$name, 'u', '')
+	ig <- igraph::graph_from_data_frame(d=d, directed=FALSE, vertices=nodes)
+	#V(ig)$name <- stringr::str_replace_all(V(ig)$name, 'u', '')
+	###################################################
+	
     sTopol <- list(nHex = nHex, 
                    xdim = xdim, 
                    ydim = ydim,
@@ -246,6 +282,7 @@ sTopology <- function (data=NULL, xdim=NULL, ydim=NULL, nHex=NULL, lattice=c("he
                    lattice = lattice,
                    shape = shape,
                    coord = coord,
+                   ig = ig,
                    call = match.call(),
                    method = "suprahex")
     
